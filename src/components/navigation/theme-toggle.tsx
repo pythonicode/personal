@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { cn } from '@/lib/utils/css'
 import { Spinner } from '../ui/spinner'
+import { WaveEffect } from '../animations/wave-effect'
 
 const ThemeToggle = () => {
   const [mounted, setMounted] = useState(false)
@@ -41,7 +42,7 @@ const ThemeToggle = () => {
         <button
           className={cn(
             'py-2 px-2.5 aspect-square rounded transition-colors',
-            'hover:bg-neutral-50 dark:hover:bg-neutral-700',
+            'hover:bg-neutral-50 dark:hover:bg-neutral-950',
           )}
           aria-label="Toggle theme"
         >

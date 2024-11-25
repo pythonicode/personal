@@ -38,13 +38,13 @@ const DropdownMenuSubMenuTrigger = React.forwardRef<
       // base
       'relative flex cursor-default select-none items-center rounded py-1.5 pl-2 pr-1 outline-none transition-colors data-[state=checked]:font-semibold sm:text-sm',
       // text color
-      'text-gray-900 dark:text-gray-50',
+      'text-neutral-900 dark:text-neutral-50',
       // disabled
-      'data-[disabled]:pointer-events-none data-[disabled]:text-gray-400 data-[disabled]:hover:bg-none dark:data-[disabled]:text-gray-600',
+      'data-[disabled]:pointer-events-none data-[disabled]:text-neutral-400 data-[disabled]:hover:bg-none dark:data-[disabled]:text-neutral-600',
       // focus
-      'focus-visible:bg-gray-100 data-[state=open]:bg-gray-100 focus-visible:dark:bg-gray-900 data-[state=open]:dark:bg-gray-900',
+      'focus-visible:bg-neutral-100 data-[state=open]:bg-neutral-100 focus-visible:dark:bg-neutral-900 data-[state=open]:dark:bg-neutral-900',
       // hover
-      'hover:bg-gray-100 hover:dark:bg-gray-900',
+      'hover:bg-neutral-100 hover:dark:bg-neutral-900',
       //
       className,
     )}
@@ -72,11 +72,11 @@ const DropdownMenuSubMenuContent = React.forwardRef<
         // heights
         'max-h-[var(--radix-popper-available-height)]',
         // background color
-        'bg-white dark:bg-gray-950',
+        'bg-white dark:bg-neutral-950',
         // text color
-        'text-gray-900 dark:text-gray-50',
+        'text-neutral-900 dark:text-neutral-50',
         // border color
-        'border-gray-200 dark:border-gray-800',
+        'border-neutral-200 dark:border-neutral-800',
         // transition
         'will-change-[transform,opacity]',
         // "data-[state=open]:animate-slideDownAndFade",
@@ -109,11 +109,11 @@ const DropdownMenuContent = React.forwardRef<
           // heights
           'max-h-[var(--radix-popper-available-height)]',
           // background color
-          'bg-white dark:bg-gray-950',
+          'bg-white dark:bg-neutral-950',
           // text color
-          'text-gray-900 dark:text-gray-50',
+          'text-neutral-900 dark:text-neutral-50',
           // border color
-          'border-gray-200 dark:border-gray-800',
+          'border-neutral-200 dark:border-neutral-800',
           // transition
           'will-change-[transform,opacity]',
           'data-[state=closed]:animate-hide',
@@ -144,13 +144,13 @@ const DropdownMenuItem = React.forwardRef<
       // base
       'group/DropdownMenuItem relative flex cursor-pointer select-none items-center rounded py-1.5 pl-2 pr-1 outline-none transition-colors data-[state=checked]:font-semibold sm:text-sm',
       // text color
-      'text-gray-900 dark:text-gray-50',
+      'text-neutral-900 dark:text-neutral-50',
       // disabled
-      'data-[disabled]:pointer-events-none data-[disabled]:text-gray-400 data-[disabled]:hover:bg-none dark:data-[disabled]:text-gray-600',
+      'data-[disabled]:pointer-events-none data-[disabled]:text-neutral-400 data-[disabled]:hover:bg-none dark:data-[disabled]:text-neutral-600',
       // focus
-      'focus-visible:bg-gray-100 focus-visible:dark:bg-gray-900',
+      'focus-visible:bg-neutral-100 focus-visible:dark:bg-neutral-900',
       // hover
-      'hover:bg-gray-100 hover:dark:bg-gray-900',
+      'hover:bg-neutral-100 hover:dark:bg-neutral-900',
       className,
     )}
     tremor-id="tremor-raw"
@@ -158,10 +158,10 @@ const DropdownMenuItem = React.forwardRef<
   >
     {children}
     {hint && (
-      <span className={cn('ml-auto pl-2 text-sm text-gray-400 dark:text-gray-600')}>{hint}</span>
+      <span className={cn('ml-auto pl-2 text-sm text-neutral-400 dark:text-neutral-600')}>{hint}</span>
     )}
     {shortcut && (
-      <span className={cn('ml-auto pl-2 text-sm text-gray-400 dark:text-gray-600')}>
+      <span className={cn('ml-auto pl-2 text-sm text-neutral-400 dark:text-neutral-600')}>
         {shortcut}
       </span>
     )}
@@ -182,13 +182,13 @@ const DropdownMenuCheckboxItem = React.forwardRef<
       // base
       'relative flex cursor-pointer select-none items-center gap-x-2 rounded py-1.5 pl-8 pr-1 outline-none transition-colors data-[state=checked]:font-semibold sm:text-sm',
       // text color
-      'text-gray-900 dark:text-gray-50',
+      'text-neutral-900 dark:text-neutral-50',
       // disabled
-      'data-[disabled]:pointer-events-none data-[disabled]:text-gray-400 data-[disabled]:hover:bg-none dark:data-[disabled]:text-gray-600',
+      'data-[disabled]:pointer-events-none data-[disabled]:text-neutral-400 data-[disabled]:hover:bg-none dark:data-[disabled]:text-neutral-600',
       // focus
-      'focus-visible:bg-gray-100 focus-visible:dark:bg-gray-900',
+      'focus-visible:bg-neutral-100 focus-visible:dark:bg-neutral-900',
       // hover
-      'hover:bg-gray-100 hover:dark:bg-gray-900',
+      'hover:bg-neutral-100 hover:dark:bg-neutral-900',
       className,
     )}
     checked={checked}
@@ -198,20 +198,20 @@ const DropdownMenuCheckboxItem = React.forwardRef<
       <DropdownMenuPrimitives.ItemIndicator>
         <RiCheckLine
           aria-hidden="true"
-          className="size-full shrink-0 text-gray-800 dark:text-gray-200"
+          className="size-full shrink-0 text-neutral-800 dark:text-neutral-200"
         />
       </DropdownMenuPrimitives.ItemIndicator>
     </span>
     {children}
     {hint && (
-      <span className={cn('ml-auto text-sm font-normal text-gray-400 dark:text-gray-600')}>
+      <span className={cn('ml-auto text-sm font-normal text-neutral-400 dark:text-neutral-600')}>
         {hint}
       </span>
     )}
     {shortcut && (
       <span
         className={cn(
-          'ml-auto text-sm font-normal tracking-widest text-gray-400 dark:border-gray-800 dark:text-gray-600',
+          'ml-auto text-sm font-normal tracking-widest text-neutral-400 dark:border-neutral-800 dark:text-neutral-600',
         )}
       >
         {shortcut}
@@ -234,13 +234,13 @@ const DropdownMenuRadioItem = React.forwardRef<
       // base
       'group/DropdownMenuRadioItem relative flex cursor-pointer select-none items-center gap-x-2 rounded py-1.5 pl-8 pr-1 outline-none transition-colors data-[state=checked]:font-semibold sm:text-sm',
       // text color
-      'text-gray-900 dark:text-gray-50',
+      'text-neutral-900 dark:text-neutral-50',
       // disabled
-      'data-[disabled]:pointer-events-none data-[disabled]:text-gray-400 data-[disabled]:hover:bg-none dark:data-[disabled]:text-gray-600',
+      'data-[disabled]:pointer-events-none data-[disabled]:text-neutral-400 data-[disabled]:hover:bg-none dark:data-[disabled]:text-neutral-600',
       // focus
-      'focus-visible:bg-gray-100 focus-visible:dark:bg-gray-900',
+      'focus-visible:bg-neutral-100 focus-visible:dark:bg-neutral-900',
       // hover
-      'hover:bg-gray-100 hover:dark:bg-gray-900',
+      'hover:bg-neutral-100 hover:dark:bg-neutral-900',
       className,
     )}
     {...props}
@@ -252,19 +252,19 @@ const DropdownMenuRadioItem = React.forwardRef<
       />
       <RiCheckboxBlankCircleLine
         aria-hidden="true"
-        className="size-full shrink-0 text-gray-300 group-data-[state=unchecked]/DropdownMenuRadioItem:flex group-data-[state=checked]/DropdownMenuRadioItem:hidden dark:text-gray-700"
+        className="size-full shrink-0 text-neutral-300 group-data-[state=unchecked]/DropdownMenuRadioItem:flex group-data-[state=checked]/DropdownMenuRadioItem:hidden dark:text-neutral-700"
       />
     </span>
     {children}
     {hint && (
-      <span className={cn('ml-auto text-sm font-normal text-gray-400 dark:text-gray-600')}>
+      <span className={cn('ml-auto text-sm font-normal text-neutral-400 dark:text-neutral-600')}>
         {hint}
       </span>
     )}
     {shortcut && (
       <span
         className={cn(
-          'ml-auto text-sm font-normal tracking-widest text-gray-400 dark:border-gray-800 dark:text-gray-600',
+          'ml-auto text-sm font-normal tracking-widest text-neutral-400 dark:border-neutral-800 dark:text-neutral-600',
         )}
       >
         {shortcut}
@@ -284,7 +284,7 @@ const DropdownMenuLabel = React.forwardRef<
       // base
       'px-2 py-2 text-xs font-medium tracking-wide',
       // text color
-      'text-gray-500 dark:text-gray-500',
+      'text-neutral-500 dark:text-neutral-500',
       className,
     )}
     {...props}
@@ -298,7 +298,7 @@ const DropdownMenuSeparator = React.forwardRef<
 >(({ className, ...props }, forwardedRef) => (
   <DropdownMenuPrimitives.Separator
     ref={forwardedRef}
-    className={cn('-mx-1 my-1 h-px border-t border-gray-200 dark:border-gray-800', className)}
+    className={cn('-mx-1 my-1 h-px border-t border-neutral-200 dark:border-neutral-800', className)}
     {...props}
   />
 ))
@@ -312,9 +312,9 @@ const DropdownMenuIconWrapper = ({
     <div
       className={cn(
         // text color
-        'text-gray-600 dark:text-gray-400',
+        'text-neutral-600 dark:text-neutral-400',
         // disabled
-        'group-data-[disabled]/DropdownMenuItem:text-gray-400 group-data-[disabled]/DropdownMenuItem:dark:text-gray-700',
+        'group-data-[disabled]/DropdownMenuItem:text-neutral-400 group-data-[disabled]/DropdownMenuItem:dark:text-neutral-700',
         className,
       )}
       {...props}

@@ -6,7 +6,7 @@ export function Wiggle({ children }: { children: React.ReactNode }) {
   return (
     <motion.div
       animate={{
-        rotate: [0, -5, 0],
+        rotate: [0, -3, 0],
         transition: {
           duration: 0.5,
           repeat: Infinity,
