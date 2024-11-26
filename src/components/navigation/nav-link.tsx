@@ -20,9 +20,8 @@ const NavLink = ({ href, children }: NavLinkProps) => {
       <Link
         href={href}
         className={cn(
-          'px-4 py-2 rounded transition-colors text-sm text-neutral-700 dark:text-neutral-300 border border-transparent dark:bg-neutral-950',
-          isActive
-            && 'bg-neutral-100 dark:bg-neutral-900'
+          'px-4 py-2 rounded transition-colors bg-opacity-80 text-sm text-foreground border border-transparent',
+          isActive && 'bg-muted-background',
         )}
       >
         {children}

@@ -27,7 +27,7 @@ const ThemeToggle = () => {
       <div
         className={cn(
           'py-2 px-2.5 aspect-square rounded transition-colors flex items-center justify-center',
-          'hover:bg-neutral-50 dark:hover:bg-neutral-700',
+          'bg-background hover:bg-muted-background',
         )}
         aria-label="Toggle theme"
       >
@@ -37,21 +37,21 @@ const ThemeToggle = () => {
   }
 
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <button
           className={cn(
             'py-2 px-2.5 aspect-square rounded transition-colors',
-            'hover:bg-neutral-50 dark:hover:bg-neutral-950',
+            'bg-background hover:bg-muted-background',
           )}
           aria-label="Toggle theme"
         >
           {theme === 'light' ? (
-            <RiSunLine className="h-4 w-4 text-neutral-700 dark:text-neutral-300" />
+            <RiSunLine className="h-4 w-4 text-foreground" />
           ) : theme === 'dark' ? (
-            <RiMoonLine className="h-4 w-4 text-neutral-700 dark:text-neutral-300" />
+            <RiMoonLine className="h-4 w-4 text-foreground" />
           ) : (
-            <RiComputerLine className="h-4 w-4 text-neutral-700 dark:text-neutral-300" />
+            <RiComputerLine className="h-4 w-4 text-foreground" />
           )}
           <span className="sr-only">Toggle theme</span>
         </button>
