@@ -1,0 +1,23 @@
+---
+image: /images/posts/archived/welcome/anthony.jpg
+title: Welcome to the Blog!
+date: '2022-07-01'
+archived: true
+---
+
+Hi, my name is Anthony. At the time of writing this I just finished my sophomore year at Stanford and I am currently interning at Apple.
+
+I previously hosted a blog on WordPress but I decided to create my own website from scratch so I could customize it and add new cool features like the [Dashboard](/dashboard) which is currently still under development.
+
+You can find links to everything you need in the footer. If you are interested in how this website was built stick around, otherwise thanks for reading!
+
+## Behind the Scenes
+
+![Next JS Logo](/images/posts/welcome/nextjs.png)
+
+For this project I decided to go with [Next JS](https://nextjs.org/) which is by far the most popular modern web framework. The only other framework I really have experience with is [Svelte and SvelteKit](https://svelte.dev/)
+which is a great framework but I decided to prioritize the convenience of deploying on [Vercel](https://vercel.com/) (the company that created Next JS) as well as just the comfort writing code in React.
+
+What does the website actually use behind the scenes? Like most people I decided to go with [Firebase](https://firebase.google.com/) to do the backend work. Right now all that I'm doing is storing post views in a database but I intend to be using it more later as I expand the website.
+
+The blog is [statically rendered by Next JS](https://nextjs.org/docs/basic-features/data-fetching/get-static-props) and uses [MDXRemote](https://github.com/hashicorp/next-mdx-remote) which is a package the parses markdown files, or in this case MDX files, and converts it into HTML. That's what you are reading right now.
