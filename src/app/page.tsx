@@ -55,11 +55,11 @@ export default function Home() {
               <p className="leading-relaxed">
                 &nbsp;&nbsp;&nbsp;&nbsp;Welcome to my website! I am a{' '}
                 <span className="z-10 cursor-pointer px-1 -mx-1 hover:bg-background rounded inline-block relative font-bold text-cyan-600 dark:text-cyan-400 hover:text-cyan-900 dark:hover:text-cyan-300 transition-all duration-100 ease-in-out hover:-rotate-2 hover:scale-110">
-                  fullstack software engineer
+                  software engineer
                 </span>{' '}
                 and{' '}
                 <span className="z-10 cursor-pointer px-1 -mx-1 hover:bg-background rounded inline-block relative font-bold text-cyan-600 dark:text-cyan-400 hover:text-cyan-900 dark:hover:text-cyan-300 transition-all duration-100 ease-in-out hover:rotate-1 hover:scale-110">
-                  manager
+                  founder
                 </span>{' '}
                 with a passion for creating{' '}
                 <span className="inline relative font-medium bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-cyan-600 hover:underline transition duration-100 ease-in-out">

@@ -91,7 +91,7 @@ export default async function Post({ params }: { params: Promise<{ slug: string 
   return (
     <article className="max-w-screen-sm mx-auto px-4 py-8">
       <header className="mb-8 border-b border-border pb-4">
-        <div className="flex flex-col md:flex-row justify-between items-center mb-4">
+        <div className="flex justify-between items-center mb-4">
           <Link
             href="/posts"
             className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2 text-sm"
