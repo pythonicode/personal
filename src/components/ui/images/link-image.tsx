@@ -8,7 +8,7 @@ type LinkImageProps = ComponentProps<typeof Image> & {
 }
 
 export function LinkImage({ href, className = '', ...props }: LinkImageProps) {
-  const imageElement = <Image {...props} className={`rounded ${className}`} />
+  const imageElement = <Image {...props} alt={props.alt ?? ''} className={`rounded ${className}`} />
 
   return <Link href={href ?? `${env.NEXT_PUBLIC_URL}${props.src}`}>{imageElement}</Link>
 }

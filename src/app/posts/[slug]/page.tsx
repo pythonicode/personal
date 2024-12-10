@@ -3,6 +3,7 @@ import { RiArrowLeftLine, RiHomeLine } from '@remixicon/react'
 import { allPosts } from 'content-collections'
 import Link from 'next/link'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import Image from 'next/image'
 
 const components = {
   // Text elements
@@ -102,7 +103,7 @@ export default async function Post({ params }: { params: Promise<{ slug: string 
         </div>
 
         <div className="relative aspect-video mb-8 rounded-lg overflow-hidden">
-          <img src={post.image} alt={post.title} className="object-cover w-full h-full" />
+          <Image src={post.image} alt={post.title} className="object-cover" fill />
         </div>
 
         <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">{post.title}</h1>
