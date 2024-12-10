@@ -29,8 +29,7 @@ const posts = defineCollection({
   }),
   transform: async (document, context) => {
     const mdx = await compileMDX(context, document)
-    const docs = await context.collection.documents()
-    const idx = docs.findIndex((d) => document._meta.filePath === d._meta.filePath)
+
     const updatedAt = await context.cache(document._meta.filePath, async (filePath) => {
       const { stdout } = await exec(`git log -1 --format=%ai -- ${filePath}`)
       if (stdout) {
@@ -51,8 +50,6 @@ const posts = defineCollection({
       ...document,
       author: authors[document.author],
       mdx,
-      prev: idx > 0 ? docs[idx - 1] : null,
-      next: idx < docs.length - 1 ? docs[idx + 1] : null,
       updatedAt,
       createdAt: document.date ? document.date : createdAt,
     } satisfies Serializable

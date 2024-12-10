@@ -72,9 +72,13 @@ const components = {
   hr: (props: any) => <hr className="border-border my-8" {...props} />,
 }
 
+const posts = allPosts
+  .filter((post) => post.archived === false && post.draft === false)
+  .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+
 export default async function Post({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const post = allPosts.find((post) => post._meta.path === slug)
+  const post = posts.find((post) => post._meta.path === slug)
 
   if (!post) {
     return (
@@ -165,29 +169,43 @@ export default async function Post({ params }: { params: Promise<{ slug: string 
 
       <footer className="mt-16 pt-8 border-t border-border pb-16">
         <div className="flex flex-col sm:flex-row justify-between gap-4">
-          {post.prev && (
-            <a
-              href={`/posts/${post.prev._meta.path}`}
-              className="group flex-1 p-4 rounded-lg border border-border hover:bg-muted-background transition-colors"
-            >
-              <span className="text-sm text-muted-foreground">Previous Post</span>
-              <h3 className="text-foreground font-medium mt-1 group-hover:text-cyan-400 transition-colors">
-                {post.prev.title}
-              </h3>
-            </a>
-          )}
+          {(() => {
+            const currentIndex = posts.findIndex((p) => p._meta.path === post._meta.path)
+            const prevPost = posts[currentIndex + 1]
 
-          {post.next && (
-            <a
-              href={`/posts/${post.next._meta.path}`}
-              className="group flex-1 p-4 rounded border border-border hover:bg-muted-background transition-colors text-right"
-            >
-              <span className="text-sm text-muted-foreground">Next Post</span>
-              <h3 className="text-foreground font-medium mt-1 group-hover:text-cyan-400 transition-colors">
-                {post.next.title}
-              </h3>
-            </a>
-          )}
+            if (prevPost) {
+              return (
+                <a
+                  href={`/posts/${prevPost._meta.path}`}
+                  className="group flex-1 p-4 rounded-lg border border-border hover:bg-muted-background transition-colors"
+                >
+                  <span className="text-sm text-muted-foreground">Previous Post</span>
+                  <h3 className="text-foreground font-medium mt-1 group-hover:text-cyan-400 transition-colors">
+                    {prevPost.title}
+                  </h3>
+                </a>
+              )
+            }
+          })()}
+
+          {(() => {
+            const currentIndex = posts.findIndex((p) => p._meta.path === post._meta.path)
+            const nextPost = posts[currentIndex - 1]
+
+            if (nextPost) {
+              return (
+                <a
+                  href={`/posts/${nextPost._meta.path}`}
+                  className="group flex-1 p-4 rounded border border-border hover:bg-muted-background transition-colors text-right"
+                >
+                  <span className="text-sm text-muted-foreground">Next Post</span>
+                  <h3 className="text-foreground font-medium mt-1 group-hover:text-cyan-400 transition-colors">
+                    {nextPost.title}
+                  </h3>
+                </a>
+              )
+            }
+          })()}
         </div>
       </footer>
     </article>
