@@ -79,8 +79,8 @@ export default function Home() {
                 <span className="hover:scale-[102%] cursor-pointer inline-block px-1 bg-cyan-200 dark:bg-cyan-900 rounded hover:bg-cyan-300 dark:hover:bg-cyan-800 transition duration-100">
                   technology
                 </span>
-                . I also use this site as a store of memory for what I've said, read, seen or done,
-                as well as an{' '}
+                . I also use this site as a store of memory for what I&apos;ve said, read, seen or
+                done, as well as an{' '}
                 <span className="cursor-pointer inline-block relative px-1 -mx-1 border border-dotted border-cyan-600 dark:border-cyan-400 hover:animate-pulse transition-all duration-100">
                   experimentation ground
                 </span>{' '}
