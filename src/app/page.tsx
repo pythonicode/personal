@@ -13,6 +13,9 @@ import { allPosts } from 'content-collections'
 import { FeaturedPost } from '@/components/ui/posts/featured-post'
 import { truncate } from '@/lib/utils/strings'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 3600
+
 const posts = allPosts
   .filter((post) => post.archived === false && post.draft === false)
   .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
@@ -154,14 +157,13 @@ export default function Home() {
         className="mx-auto max-w-screen-lg flex flex-col items-center justify-center p-4"
       >
         <h2 className="mb-8 mt-16 text-3xl text-center md:text-5xl font-black">✨ POSTS ✨</h2>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 w-full">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
           {posts.slice(0, 3).map((post) => (
             <FeaturedPost
               key={post._meta.path}
               title={post.title}
               description={truncate(post.content, 128)}
               image={post.image}
-              updatedAt={new Date(post.updatedAt)}
               createdAt={new Date(post.createdAt)}
               readingTime={Math.round(post.content.split(' ').length / 250)}
               tags={post.tags}

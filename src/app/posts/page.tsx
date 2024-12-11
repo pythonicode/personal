@@ -7,7 +7,8 @@ const posts = allPosts
 
 export default function Posts() {
   return (
-    <main className="max-w-screen-lg mx-auto px-4 py-8">
+    <main className="max-w-screen-lg mx-auto px-4 py-16">
+      <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4 text-center">All Posts</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {posts.map((post) => (
           <Post
@@ -15,7 +16,6 @@ export default function Posts() {
             title={post.title}
             description={post.content}
             image={post.image}
-            updatedAt={new Date(post.updatedAt)}
             createdAt={new Date(post.createdAt)}
             readingTime={Math.round(post.content.split(' ').length / 250)}
             tags={post.tags}
