@@ -7,6 +7,7 @@ export const env = createEnv({
     PAYLOAD_SECRET: z.string().min(1),
     BLOB_READ_WRITE_TOKEN: z.string().min(1),
     RESEND_API_KEY: z.string().min(1),
+    SIGNING_SECRET: z.string().min(1),
   },
 
   /**

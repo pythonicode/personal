@@ -12,6 +12,11 @@ import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip
 import { allPosts } from 'content-collections'
 import { FeaturedPost } from '@/components/ui/posts/featured-post'
 import { truncate } from '@/lib/utils/strings'
+import { RenderCaptcha } from '@/components/captcha'
+import { generateCaptcha } from '@/lib/actions/captcha/generate-captcha'
+import { ContactForm } from '@/components/ui/contact/form'
+import { ContactFormServer } from '@/components/ui/contact/form-server'
+import { Suspense } from 'react'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 3600
@@ -20,7 +25,8 @@ const posts = allPosts
   .filter((post) => post.archived === false && post.draft === false)
   .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
 
-export default function Home() {
+export default async function Home() {
+  const result = await generateCaptcha()
   return (
     <main className="py-20">
       <section
@@ -28,6 +34,7 @@ export default function Home() {
         className="mx-auto max-w-screen-lg flex flex-col items-center justify-center px-4"
       >
         <div className="flex flex-col items-center gap-4">
+          {result?.data ? <RenderCaptcha base64={result.data.base64} /> : <div>Loading...</div>}
           <Wiggle>
             <PopIn>
               <div className="relative w-32 h-32">
@@ -259,9 +266,9 @@ export default function Home() {
       >
         <h2 className="mb-8 mt-16 text-3xl text-center md:text-5xl font-black">✨ CONTACT ✨</h2>
         <div className="flex flex-col items-center justify-center">
-          <div className="flex flex-col items-center justify-center">
-            <h3 className="text-2xl font-bold">TBD</h3>
-          </div>
+          <Suspense fallback={<div>Loading...</div>}>
+            <ContactFormServer />
+          </Suspense>
         </div>
       </section>
       <div className="h-16" />
