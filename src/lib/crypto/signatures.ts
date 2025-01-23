@@ -7,14 +7,9 @@ export function sign(value: string, secret: string = env.SIGNING_SECRET): string
 
 export function verify(
   value: string,
-  signature: string,
+  signedValue: string,
   secret: string = env.SIGNING_SECRET,
-): string {
+): boolean {
   const expectedSignature = sign(value, secret)
-
-  if (expectedSignature !== signature) {
-    throw new Error('Invalid signature')
-  }
-
-  return value
+  return expectedSignature === signedValue
 }

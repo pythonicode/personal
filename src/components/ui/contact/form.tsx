@@ -9,13 +9,14 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { RenderCaptcha } from '@/components/captcha'
-import { buttonVariants } from '../button'
-
-interface ContactFormData {
-  name: string
-  email: string
-  message: string
-}
+import { Button, buttonVariants } from '../button'
+import { RiPlaneFill, RiSendPlane2Fill } from '@remixicon/react'
+import { sendMessage } from '@/lib/actions/contact/send-message'
+import { useAction } from 'next-safe-action/hooks'
+import { z } from 'zod'
+import { SendMessageSchema } from '@/lib/schemas/contact/send-message'
+type ContactFormData =
+  z.infer<typeof SendMessageSchema> extends infer T ? Omit<T, 'answer' | 'signedAnswer'> : never
 
 const ContactForm = ({
   base64,
@@ -40,10 +41,25 @@ const ContactForm = ({
     }))
   }
 
+  const [answer, setAnswer] = useState('')
+
+  const { execute, status, result } = useAction(sendMessage, {
+    onSuccess: () => {
+      console.log('Message sent successfully')
+    },
+    onError: (error) => {
+      console.error('Error sending message:', error)
+    },
+  })
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     // Handle form submission
+    console.log({ ...formData, answer, signedAnswer })
+    execute({ ...formData, answer, signedAnswer })
   }
+
+  const [open, setOpen] = useState(false)
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-2 w-80">
@@ -70,13 +86,33 @@ const ContactForm = ({
         onChange={handleChange}
         required
       />
-      <DropdownMenu>
-        <DropdownMenuTrigger className={buttonVariants({ variant: 'outline' })}>
+      <DropdownMenu open={open} onOpenChange={setOpen}>
+        <DropdownMenuTrigger className={buttonVariants({ variant: 'outline' })} disabled={open}>
           Submit Message
         </DropdownMenuTrigger>
         <DropdownMenuContent className="p-4">
           {captcha}
-          <Input className="mt-2" placeholder="Enter Captcha" required />
+          <div className="flex items-center gap-2 mt-2">
+            <Input
+              id="captcha"
+              placeholder="Answer (to 2 decimal places)"
+              required
+              value={answer}
+              onChange={(e) => setAnswer(e.target.value)}
+            />
+            <Button size="icon" type="submit" onClick={handleSubmit} className="w-8 h-8">
+              <RiSendPlane2Fill className="w-4 h-4" />
+            </Button>
+          </div>
+          {status === 'hasErrored' && (
+            <p className="text-xs text-red-500 mt-1">
+              {result.serverError ??
+                Object.values(result.validationErrors?.fieldErrors ?? {})
+                  .flat()
+                  .at(0) ??
+                result.validationErrors?.formErrors?.at(0)}
+            </p>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
     </form>
