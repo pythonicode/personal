@@ -13,7 +13,6 @@ export async function ContactFormServer() {
 
   return (
     <ContactForm
-      base64={result.data.base64}
       signedAnswer={result.data.signedAnswer}
       captcha={<RenderCaptcha base64={result.data.base64} />}
     />

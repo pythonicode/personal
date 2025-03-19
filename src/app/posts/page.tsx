@@ -7,9 +7,9 @@ const posts = allPosts
 
 export default function Posts() {
   return (
-    <main className="max-w-screen-lg mx-auto px-4 py-16">
+    <main className="max-w-screen-md mx-auto px-4 py-16">
       <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4 text-center">All Posts</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 py-8">
         {posts.map((post) => (
           <Post
             key={post._meta.path}

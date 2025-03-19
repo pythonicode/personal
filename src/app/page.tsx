@@ -26,7 +26,6 @@ const posts = allPosts
   .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
 
 export default async function Home() {
-  const result = await generateCaptcha()
   return (
     <main className="py-20">
       <section
@@ -34,7 +33,6 @@ export default async function Home() {
         className="mx-auto max-w-screen-lg flex flex-col items-center justify-center px-4"
       >
         <div className="flex flex-col items-center gap-4">
-          {result?.data ? <RenderCaptcha base64={result.data.base64} /> : <div>Loading...</div>}
           <Wiggle>
             <PopIn>
               <div className="relative w-32 h-32">

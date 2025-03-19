@@ -32,7 +32,7 @@ export const generateCaptcha = client.action(async () => {
 
   // Convert string to UTF-8 then to base64
   const base64 = Buffer.from(svg).toString('base64')
-  const signedAnswer = sign(answer.toString())
+  const signedAnswer = sign(answer.toFixed(2).toString())
 
   return {
     base64,
