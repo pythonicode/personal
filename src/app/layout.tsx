@@ -6,6 +6,8 @@ import BottomNav from '@/components/navigation/bottom-nav'
 import Providers from '@/providers'
 import { cn } from '@/lib/utils/css'
 
+import { Toaster } from '@/components/ui/toaster'
+
 const font = importFont({
   src: './font.woff2',
   display: 'swap',
@@ -25,6 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Providers>
           {children}
           <BottomNav />
+          <Toaster />
         </Providers>
       </body>
     </html>
