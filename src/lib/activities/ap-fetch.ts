@@ -135,11 +135,11 @@ export async function fetchActivities(
   const filteredActivities = activities.filter((activity) => {
     const isValidIntensity = typeof activity.intensity === 'number' && !isNaN(activity.intensity)
     if (!isValidIntensity) {
-      console.warn(`Filtered out activity with invalid intensity:`, activity)
+      // console.warn(`Filtered out activity with invalid intensity:`, activity)
     }
     const isValidTitle = activity.title !== '' && activity.title !== null
     if (!isValidTitle) {
-      console.warn(`Filtered out activity with invalid title:`, activity)
+      // console.warn(`Filtered out activity with invalid title:`, activity)
     }
     return isValidIntensity && isValidTitle
   })
@@ -166,4 +166,3 @@ function parseDate(dateText: string): Date {
 }
 
 const result = await fetchActivities('2697', new Date('2024-12-09'), new Date('2024-12-10'))
-console.log(result)
