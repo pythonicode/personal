@@ -2,92 +2,66 @@
 
 import { useState } from 'react'
 import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { Button, buttonVariants } from '../button'
+import { Button } from '../button'
 import { RiSendPlane2Fill } from '@remixicon/react'
-import { sendMessage } from '@/lib/actions/contact/send-message'
+import { revealEmail } from '@/lib/actions/contact/reveal-email'
 import { useAction } from 'next-safe-action/hooks'
-import { z } from 'zod'
-import { SendMessageSchema } from '@/lib/schemas/contact/send-message'
-type ContactFormData =
-  z.infer<typeof SendMessageSchema> extends infer T ? Omit<T, 'answer' | 'signedAnswer'> : never
+import { toast } from 'sonner'
 
 const ContactForm = ({
-  base64,
   signedAnswer,
   captcha,
 }: {
-  base64: string
   signedAnswer: string
   captcha: React.ReactNode
 }) => {
-  const [formData, setFormData] = useState<ContactFormData>({
-    name: '',
-    email: '',
-    message: '',
-  })
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
-  }
-
+  const [open, setOpen] = useState(false)
   const [answer, setAnswer] = useState('')
+  const [email, setEmail] = useState('***********************')
+  const [isRevealed, setIsRevealed] = useState(false)
 
-  const { execute, status, result } = useAction(sendMessage, {
-    onSuccess: () => {
-      console.log('Message sent successfully')
+  const { execute, status, result } = useAction(revealEmail, {
+    onSuccess: ({ data }) => {
+      if (data) {
+        setEmail(data)
+        setOpen(false)
+        setAnswer('')
+        setIsRevealed(true)
+        toast.success('Email revealed')
+      }
     },
-    onError: (error) => {
-      console.error('Error sending message:', error)
+    onError: ({ error }) => {
+      if (error.serverError) {
+        toast.error(error.serverError)
+      }
     },
   })
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle form submission
-    console.log({ ...formData, answer, signedAnswer })
-    execute({ ...formData, answer, signedAnswer })
+    execute({ answer: answer.trim(), signedAnswer })
   }
 
-  const [open, setOpen] = useState(false)
-
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-2 w-80">
-      <Input
-        name="name"
-        placeholder="Your Name"
-        value={formData.name}
-        onChange={handleChange}
-        required
-        className="w-full"
-      />
-      <Input
-        name="email"
-        type="email"
-        placeholder="Your Email"
-        value={formData.email}
-        onChange={handleChange}
-        required
-      />
-      <Textarea
-        name="message"
-        placeholder="Your Message"
-        value={formData.message}
-        onChange={handleChange}
-        required
-      />
+    <div className="flex flex-col gap-2 w-80">
+      <div className="relative">
+        <Input
+          readOnly
+          value={email}
+          className="w-full cursor-pointer"
+          onClick={() => !isRevealed && setOpen(true)}
+        />
+      </div>
       <DropdownMenu open={open} onOpenChange={setOpen}>
-        <DropdownMenuTrigger className={buttonVariants({ variant: 'outline' })} disabled={open}>
-          Submit Message
+        <DropdownMenuTrigger asChild>
+          <Button className="w-full" variant="outline" disabled={isRevealed}>
+            {isRevealed ? 'Email Revealed' : 'Click to Reveal'}
+          </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="p-4">
           {captcha}
@@ -99,7 +73,7 @@ const ContactForm = ({
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
             />
-            <Button size="icon" type="submit" onClick={handleSubmit} className="w-8 h-8">
+            <Button size="icon" onClick={handleSubmit} className="w-8 h-8">
               <RiSendPlane2Fill className="w-4 h-4" />
             </Button>
           </div>
@@ -114,7 +88,7 @@ const ContactForm = ({
           )}
         </DropdownMenuContent>
       </DropdownMenu>
-    </form>
+    </div>
   )
 }
 

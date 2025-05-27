@@ -9,6 +9,7 @@ export const env = createEnv({
     RESEND_API_KEY: z.string().min(1),
     SIGNING_SECRET: z.string().min(1),
     LINK_PASSWORD: z.string().min(1),
+    EMAIL: z.string().min(1).email(),
   },
 
   /**
