@@ -6,6 +6,7 @@ import { Button } from '../button'
 import { RiLinkM, RiFileCopyLine } from '@remixicon/react'
 import { generateLink } from '@/lib/actions/links/generate-link'
 import { useAction } from 'next-safe-action/hooks'
+import { toast } from 'sonner'
 
 const LinksForm = () => {
   const [url, setUrl] = useState('')
@@ -16,6 +17,7 @@ const LinksForm = () => {
     },
     onError: (error) => {
       console.error('Error generating link:', error)
+      toast.error('Error generating link')
     },
   })
 

@@ -7,6 +7,7 @@ import { RiLockUnlockLine } from '@remixicon/react'
 import { unlockLink } from '@/lib/actions/links/unlock-link'
 import { useAction } from 'next-safe-action/hooks'
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
 const UnlockForm = ({ encryptedUrl }: { encryptedUrl: string }) => {
   const [password, setPassword] = useState('')
@@ -17,6 +18,7 @@ const UnlockForm = ({ encryptedUrl }: { encryptedUrl: string }) => {
     },
     onError: (error) => {
       console.error('Error unlocking link:', error)
+      toast.error('Error unlocking link')
     },
   })
 
