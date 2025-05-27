@@ -13,18 +13,25 @@ const UnlockLinkSchema = z.object({
 export const unlockLink = client
   .schema(UnlockLinkSchema)
   .action(async ({ parsedInput: { encryptedUrl, password } }) => {
+    let decryptedUrl
     try {
       // Decrypt the URL using the provided password
-      const decryptedUrl = await decrypt(decodeURIComponent(encryptedUrl), password)
-
-      // Validate that the decrypted result is a valid URL
-      const urlSchema = z.string().url()
-      const validatedUrl = urlSchema.parse(decryptedUrl)
-
-      // Redirect to the decrypted URL
-      redirect(validatedUrl)
+      decryptedUrl = await decrypt(decodeURIComponent(encryptedUrl), password)
     } catch (error) {
-      // If decryption fails or URL is invalid, throw an error
       throw new Error('Invalid password or corrupted link')
     }
+
+    // Validate that the decrypted result is a valid URL
+    const urlSchema = z.string().url()
+    const result = urlSchema.safeParse(decryptedUrl)
+
+    console.log('decryptedUrl', decryptedUrl)
+    console.log('result', result)
+
+    if (!result.success) {
+      throw new Error('Invalid password or corrupted link')
+    }
+
+    // Redirect to the decrypted URL
+    redirect(result.data)
   })

@@ -6,15 +6,17 @@ import { Button } from '../button'
 import { RiLockUnlockLine } from '@remixicon/react'
 import { unlockLink } from '@/lib/actions/links/unlock-link'
 import { useAction } from 'next-safe-action/hooks'
-import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
+import { Spinner } from '../spinner'
 
 const UnlockForm = ({ encryptedUrl }: { encryptedUrl: string }) => {
   const [password, setPassword] = useState('')
+  const [redirecting, setRedirecting] = useState(false)
 
   const { execute, status, result } = useAction(unlockLink, {
     onSuccess: ({ data }) => {
       console.log('Link unlocked successfully, redirecting...')
+      setRedirecting(true)
     },
     onError: (error) => {
       console.error('Error unlocking link:', error)
@@ -29,23 +31,26 @@ const UnlockForm = ({ encryptedUrl }: { encryptedUrl: string }) => {
 
   return (
     <div className="flex flex-col gap-4 w-80">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <Input
-          name="password"
-          type="password"
-          placeholder="Enter password to unlock link"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          className="w-full"
-        />
+      {redirecting ? (
+        <Spinner />
+      ) : (
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <Input
+            name="password"
+            type="password"
+            placeholder="Enter password to unlock link"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="w-full"
+          />
 
-        <Button type="submit" disabled={status === 'executing' || !password}>
-          <RiLockUnlockLine className="w-4 h-4 mr-2" />
-          {status === 'executing' ? 'Unlocking...' : 'Unlock Link'}
-        </Button>
-      </form>
-
+          <Button type="submit" disabled={status === 'executing' || !password}>
+            <RiLockUnlockLine className="w-4 h-4 mr-2" />
+            {status === 'executing' ? 'Unlocking...' : 'Unlock Link'}
+          </Button>
+        </form>
+      )}
       {status === 'hasErrored' && (
         <p className="text-xs text-red-500">
           {result?.serverError ??
