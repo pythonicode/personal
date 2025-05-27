@@ -14,7 +14,7 @@ const UnlockForm = ({ encryptedUrl }: { encryptedUrl: string }) => {
   const [redirecting, setRedirecting] = useState(false)
 
   const { execute, status, result } = useAction(unlockLink, {
-    onSuccess: ({ data }) => {
+    onSuccess: () => {
       console.log('Link unlocked successfully, redirecting...')
       setRedirecting(true)
     },

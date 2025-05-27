@@ -25,9 +25,6 @@ export const unlockLink = client
     const urlSchema = z.string().url()
     const result = urlSchema.safeParse(decryptedUrl)
 
-    console.log('decryptedUrl', decryptedUrl)
-    console.log('result', result)
-
     if (!result.success) {
       throw new Error('Invalid password or corrupted link')
     }
