@@ -11,6 +11,7 @@ const DropdownMenuRoot = React.forwardRef<
   React.ComponentRef<typeof DropdownMenuPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Root>
 >((props, ref) => <DropdownMenuPrimitive.Root {...props} modal={false} />)
+DropdownMenuRoot.displayName = 'DropdownMenuRoot'
 
 const DropdownMenuTrigger = DropdownMenuPrimitive.Trigger
 
