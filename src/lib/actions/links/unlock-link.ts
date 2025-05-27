@@ -3,7 +3,6 @@
 import { client } from '@/lib/actions'
 import { z } from 'zod'
 import { decrypt } from '@/lib/crypto'
-import { redirect } from 'next/navigation'
 
 const UnlockLinkSchema = z.object({
   encryptedUrl: z.string().min(1, 'Encrypted URL is required'),
@@ -29,6 +28,6 @@ export const unlockLink = client
       throw new Error('Invalid password or corrupted link')
     }
 
-    // Redirect to the decrypted URL
-    redirect(result.data)
+    // Return the decrypted URL
+    return { decryptedUrl: result.data, password: password }
   })
