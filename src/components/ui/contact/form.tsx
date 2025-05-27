@@ -8,9 +8,8 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { RenderCaptcha } from '@/components/captcha'
 import { Button, buttonVariants } from '../button'
-import { RiPlaneFill, RiSendPlane2Fill } from '@remixicon/react'
+import { RiSendPlane2Fill } from '@remixicon/react'
 import { sendMessage } from '@/lib/actions/contact/send-message'
 import { useAction } from 'next-safe-action/hooks'
 import { z } from 'zod'
