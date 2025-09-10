@@ -8,7 +8,6 @@ export const env = createEnv({
     BLOB_READ_WRITE_TOKEN: z.string().min(1),
     RESEND_API_KEY: z.string().min(1),
     SIGNING_SECRET: z.string().min(1),
-    LINK_PASSWORD: z.string().min(1),
     EMAIL: z.string().min(1).email(),
   },
 

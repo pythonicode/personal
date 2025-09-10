@@ -3,6 +3,7 @@
 import { client } from '@/lib/actions'
 import { z } from 'zod'
 import { decrypt } from '@/lib/crypto'
+import { ActionError } from '@/lib/actions'
 
 const UnlockLinkSchema = z.object({
   encryptedUrl: z.string().min(1, 'Encrypted URL is required'),
@@ -17,7 +18,7 @@ export const unlockLink = client
       // Decrypt the URL using the provided password
       decryptedUrl = await decrypt(decodeURIComponent(encryptedUrl), password)
     } catch (error) {
-      throw new Error('Invalid password or corrupted link')
+      throw new ActionError('Invalid password or corrupted link')
     }
 
     // Validate that the decrypted result is a valid URL
@@ -25,9 +26,9 @@ export const unlockLink = client
     const result = urlSchema.safeParse(decryptedUrl)
 
     if (!result.success) {
-      throw new Error('Invalid password or corrupted link')
+      throw new ActionError('Invalid password or corrupted link')
     }
 
     // Return the decrypted URL
-    return { decryptedUrl: result.data, password: password }
+    return { decryptedUrl: result.data, password }
   })

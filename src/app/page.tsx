@@ -12,11 +12,10 @@ import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip
 import { allPosts } from 'content-collections'
 import { FeaturedPost } from '@/components/ui/posts/featured-post'
 import { truncate } from '@/lib/utils/strings'
-import { RenderCaptcha } from '@/components/captcha'
-import { generateCaptcha } from '@/lib/actions/captcha/generate-captcha'
-import { ContactForm } from '@/components/ui/contact/form'
 import { ContactFormServer } from '@/components/ui/contact/form-server'
 import { Suspense } from 'react'
+import { getTimeBasedQuote } from '@/lib/quotes'
+import { RiExternalLinkLine, RiLoaderLine, RiRunLine } from '@remixicon/react'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 3600
@@ -26,6 +25,8 @@ const posts = allPosts
   .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
 
 export default async function Home() {
+  const quote = getTimeBasedQuote()
+  
   return (
     <main className="py-20">
       <section
@@ -53,10 +54,8 @@ export default async function Home() {
             />
             <PopIn>
               <Blockquote className="max-w-xl mx-auto text-sm my-8">
-                When joining startups I noticed that the pace of development would churn out major
-                amount of technical debt and spaghetti code, I was surprised to find this problem
-                exacerbated and not nullified in larger software companies.
-                <BlockquoteAuthor>Anthony Riley</BlockquoteAuthor>
+                {quote.content}
+                <BlockquoteAuthor>{quote.author}</BlockquoteAuthor>
               </Blockquote>
             </PopIn>
             <div className="max-w-prose text-left mx-auto p-4">
@@ -267,6 +266,41 @@ export default async function Home() {
           <Suspense fallback={<div>Loading...</div>}>
             <ContactFormServer />
           </Suspense>
+        </div>
+      </section>
+      <section
+        id="tools"
+        className="mx-auto max-w-screen-lg flex flex-col items-center justify-center p-4"
+      >
+        <h2 className="mb-8 mt-16 text-3xl text-center md:text-5xl font-black">🛠️ TOOLS 🛠️</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
+          <Link
+            href="/links"
+            className="group flex flex-col items-center justify-center p-6 border rounded-lg hover:bg-muted/50 transition-colors duration-200 text-center"
+          >
+              <div className="text-4xl mb-2"><RiExternalLinkLine /></div>
+              <h3 className="text-xl font-bold mb-2">Links</h3>
+              <p className="text-muted-foreground text-sm">
+                Share and protect your links with encryption
+              </p>
+          </Link>
+          <Link
+            href="/training"
+            className="group flex flex-col items-center justify-center p-6 border rounded-lg hover:bg-muted/50 transition-colors duration-200 text-center"
+          >
+              <div className="text-4xl mb-2"><RiRunLine /></div>
+              <h3 className="text-xl font-bold mb-2">Training</h3>
+              <p className="text-muted-foreground text-sm">
+                Track and analyze your training activities
+              </p>
+          </Link>
+          <div className="group flex flex-col items-center justify-center p-6 border rounded-lg text-center opacity-50 cursor-not-allowed">
+              <div className="text-4xl mb-2 "><RiLoaderLine /></div>
+              <h3 className="text-xl font-bold mb-2">Coming Soon</h3>
+              <p className="text-muted-foreground text-sm">
+                More tools are in development
+              </p>
+            </div>
         </div>
       </section>
       <div className="h-16" />
