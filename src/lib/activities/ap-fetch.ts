@@ -1,5 +1,5 @@
 import * as cheerio from 'cheerio'
-import { Activity, ActivityType } from '@/lib/activities/types'
+import { Activity, ActivityType, ActivityZone } from '@/lib/activities/types'
 
 export async function fetchActivities(
   userId: string,
@@ -36,6 +36,12 @@ export async function fetchActivities(
           .match(/(\d+\.?\d*)\s*km/)
         const distance = distanceMatch ? distanceMatch[1] : null
 
+        // Get elevation gain
+        const elevationSpan = $el.find('span[title="climb"]')
+        const elevationText = elevationSpan.text()
+        const elevationMatch = elevationText.match(/\+(\d+)m/)
+        const elevationGain = elevationMatch ? parseInt(elevationMatch[1]) : undefined
+
         // Map activity type
         let type: ActivityType = 'other'
         const lowerTitle = title.toLowerCase()
@@ -53,67 +59,62 @@ export async function fetchActivities(
           type = 'other'
         }
 
-        // Calculate intensity based on heart rate and/or pace
-        const intensityMatch = $el.find('svg.ichart title').text()
-        let intensity: number
+        // Parse duration
+        const duration = parseDuration(durationText)
 
-        if (intensityMatch) {
+        // Calculate intensity based on heart rate and/or pace
+        let intensityMatch = $el.find('svg.ichart title').text()
+        
+        // If no SVG chart, try to get intensity from strong element
+        if (!intensityMatch) {
+          intensityMatch = $el.find('strong').attr('title') || ''
+        }
+        
+        let intensity: Record<ActivityZone, number>
+        let calculatedIntensity: number
+
+        if (intensityMatch && intensityMatch.includes('intensity:')) {
           const zones = intensityMatch.match(/\(([^)]+)\)/g) || []
+          const zoneIntensity: Record<ActivityZone, number> = {
+            Z0: 0, Z1: 0, Z2: 0, Z3: 0, Z4: 0, Z5: 0
+          }
 
           let totalIntensity = 0
           zones.forEach((zone) => {
             const [time, level] = zone.slice(1, -1).split('@')
-
-            // Handle hours:minutes:seconds format
-            const timeParts = time.trim().split(':')
-            let seconds = 0
-            if (timeParts.length === 3) {
-              // Hours:Minutes:Seconds
-              seconds =
-                parseInt(timeParts[0]) * 3600 + parseInt(timeParts[1]) * 60 + parseInt(timeParts[2])
-            } else if (timeParts.length === 2) {
-              // Minutes:Seconds
-              const [mins, secs = '0'] = timeParts
-              seconds = parseInt(mins) * 60 + parseInt(secs)
-            } else {
-              // Just seconds
-              seconds = parseInt(timeParts[0])
-            }
+            const zoneSeconds = parseDuration(time.trim())
             const zoneLevel = parseInt(level)
 
-            totalIntensity += Math.pow(seconds, 0.75) * zoneLevel
+            // Map zone level to zone name
+            const zoneName = `Z${zoneLevel}` as ActivityZone
+            if (zoneName in zoneIntensity) {
+              zoneIntensity[zoneName] = zoneSeconds
+            }
+
+            totalIntensity += Math.pow(zoneSeconds, 0.75) * zoneLevel
           })
 
-          intensity = Math.round(totalIntensity / 10)
+          intensity = zoneIntensity
+          calculatedIntensity = Math.round(totalIntensity / 10)
         } else {
           // If no intensity data, use duration * 1
-          const durationText = $el.find('[xclass="i0"]').text()
-          const timeParts = durationText.split(':')
-          let totalSeconds = 0
-
-          if (timeParts.length === 3) {
-            // Hours:Minutes:Seconds
-            totalSeconds =
-              parseInt(timeParts[0]) * 3600 + parseInt(timeParts[1]) * 60 + parseInt(timeParts[2])
-          } else {
-            // Minutes:Seconds
-            const [mins, secs = '0'] = timeParts
-            totalSeconds = parseInt(mins) * 60 + parseInt(secs)
+          calculatedIntensity = Math.round(Math.pow(duration, 0.75) / 10)
+          // Create empty zone intensity record
+          intensity = {
+            Z0: 0, Z1: 0, Z2: 0, Z3: 0, Z4: 0, Z5: 0
           }
-
-          intensity = Math.round(Math.pow(totalSeconds, 0.75) / 10)
         }
 
         // Get link to activity details
         const dayViewUrl = `https://www.attackpoint.org/viewlog.jsp/user_${userId}/period-1/enddate-${date.toISOString().split('T')[0]}`
 
-        // Build properties object
-        const properties: Record<string, string> = {}
+        // Build metadata object
+        const metadata: Record<string, string> = {}
         if (distance) {
-          properties['Distance'] = `${distance}km`
+          metadata['Distance'] = `${distance}km`
         }
         if (durationText) {
-          properties['Duration'] = durationText
+          metadata['Duration'] = durationText
         }
 
         activities.push({
@@ -122,8 +123,12 @@ export async function fetchActivities(
           description,
           href: dayViewUrl,
           type,
+          duration,
+          distance: distance ? parseFloat(distance) : undefined,
+          elevationGain,
           intensity,
-          properties,
+          calculatedIntensity,
+          metadata,
         })
       }
     })
@@ -133,12 +138,34 @@ export async function fetchActivities(
   }
 
   const filteredActivities = activities.filter((activity) => {
-    const isValidIntensity = typeof activity.intensity === 'number' && !isNaN(activity.intensity)
+    const isValidIntensity = typeof activity.intensity === 'object' && activity.intensity !== null
     const isValidTitle = activity.title !== '' && activity.title !== null
-    return isValidIntensity && isValidTitle
+    const isValidCalculatedIntensity = typeof activity.calculatedIntensity === 'number' && !isNaN(activity.calculatedIntensity)
+    return isValidIntensity && isValidTitle && isValidCalculatedIntensity
   })
 
   return filteredActivities
+}
+
+function parseDuration(durationText: string): number {
+  // Handle hours:minutes:seconds format
+  const timeParts = durationText.split(':')
+  let seconds = 0
+  
+  if (timeParts.length === 3) {
+    // Hours:Minutes:Seconds
+    seconds =
+      parseInt(timeParts[0]) * 3600 + parseInt(timeParts[1]) * 60 + parseInt(timeParts[2])
+  } else if (timeParts.length === 2) {
+    // Minutes:Seconds
+    const [mins, secs = '0'] = timeParts
+    seconds = parseInt(mins) * 60 + parseInt(secs)
+  } else {
+    // Just seconds
+    seconds = parseInt(timeParts[0])
+  }
+  
+  return seconds
 }
 
 function parseDate(dateText: string): Date {
@@ -159,4 +186,3 @@ function parseDate(dateText: string): Date {
   return date
 }
 
-const result = await fetchActivities('2697', new Date('2024-12-09'), new Date('2024-12-10'))

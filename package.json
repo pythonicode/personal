@@ -46,6 +46,7 @@
     "react-dom": "19.0.0-rc.1",
     "react-dom@rc": "link:types/react-dom@rc",
     "react@rc": "link:types/react@rc",
+    "recharts": "^3.2.0",
     "sanitize-html": "^2.13.1",
     "sharp": "0.32.6",
     "sonner": "^2.0.1",

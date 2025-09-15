@@ -4,9 +4,9 @@ import { Activity } from '@/lib/activities/types'
 import { Suspense, useMemo } from 'react'
 import { fetchActivities } from '@/lib/activities/ap-fetch'
 import { getActivityColor } from '@/lib/activities'
-import { HtmlRenderer } from '../utils/html'
+import { HtmlRenderer } from '../../utils/html'
 import { truncate } from '@/lib/utils/strings'
-import { Popover, PopoverContent, PopoverTrigger } from './popover'
+import { Popover, PopoverContent, PopoverTrigger } from '../popover'
 
 interface ActivityCalendarProps {
   weeks: number
@@ -38,11 +38,11 @@ export default function ActivityCalendar({ weeks, activities = [] }: ActivityCal
     return labels
   }
   const maxIntensity = useMemo(() => {
-    // Group activities by date and sum intensities
+    // Group activities by date and sum calculated intensities
     const dailyIntensities = activities.reduce(
       (acc, activity) => {
         const dateStr = activity.date.toDateString()
-        acc[dateStr] = (acc[dateStr] || 0) + activity.intensity
+        acc[dateStr] = (acc[dateStr] || 0) + activity.calculatedIntensity
         return acc
       },
       {} as Record<string, number>,
@@ -52,11 +52,11 @@ export default function ActivityCalendar({ weeks, activities = [] }: ActivityCal
   }, [activities])
 
   const minIntensity = useMemo(() => {
-    // Group activities by date and sum intensities
+    // Group activities by date and sum calculated intensities
     const dailyIntensities = activities.reduce(
       (acc, activity) => {
         const dateStr = activity.date.toDateString()
-        acc[dateStr] = (acc[dateStr] || 0) + activity.intensity
+        acc[dateStr] = (acc[dateStr] || 0) + activity.calculatedIntensity
         return acc
       },
       {} as Record<string, number>,
@@ -127,7 +127,7 @@ export default function ActivityCalendar({ weeks, activities = [] }: ActivityCal
                 )
 
                 const intensity = activitiesForDay.reduce(
-                  (acc, activity) => acc + activity.intensity,
+                  (acc, activity) => acc + activity.calculatedIntensity,
                   0,
                 )
 
@@ -190,12 +190,12 @@ export default function ActivityCalendar({ weeks, activities = [] }: ActivityCal
                                 <span className="font-medium">{activity.title}</span>
                               )}
                               <span className="text-xs text-muted-foreground">
-                                ({activity.intensity})
+                                ({activity.calculatedIntensity})
                               </span>
                             </div>
                             <div className="flex flex-row gap-x-1 flex-wrap">
-                              {activity.properties &&
-                                Object.entries(activity.properties).map(([key, value]) => (
+                              {activity.metadata &&
+                                Object.entries(activity.metadata).map(([key, value]) => (
                                   <span key={key} className="text-xs text-muted-foreground">
                                     {value}
                                   </span>
