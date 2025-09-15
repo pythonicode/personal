@@ -6,8 +6,6 @@ export function getActivityColor(type: ActivityType) {
       return 'cyan'
     case 'strength':
       return 'purple'
-    case 'workout':
-      return 'rose'
     case 'bike':
       return 'green'
     case 'orienteering':
