@@ -2,6 +2,9 @@ import { TrainingVolumeCalendarAsync } from "@/components/ui/custom/training-vol
 import { OrienteeringSessionsCalendarAsync } from "@/components/ui/custom/orienteering-sessions-calendar/orienteering-sessions-calendar-async";
 import { EffectiveVolumeCalendarAsync } from "@/components/ui/custom/effective-volume-calendar/effective-volume-calendar-async";
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 3600
+
 export default function TrainingPage() {
   return (
     <main className="max-w-screen-md mx-auto px-4 py-16">
