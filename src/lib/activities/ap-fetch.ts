@@ -7,9 +7,17 @@ export async function fetchActivities(
   endDate: Date,
 ): Promise<Activity[]> {
   const activities: Activity[] = []
-  let currentDate = endDate
+  
+  // Normalize dates to start of day for comparison
+  const normalizedStartDate = new Date(startDate)
+  normalizedStartDate.setHours(0, 0, 0, 0)
+  
+  const normalizedEndDate = new Date(endDate)
+  normalizedEndDate.setHours(0, 0, 0, 0)
+  
+  let currentDate = normalizedEndDate
 
-  while (currentDate >= startDate) {
+  while (currentDate >= normalizedStartDate) {
     const url = `https://www.attackpoint.org/viewlog.jsp/user_${userId}/period-7/enddate-${currentDate.toISOString().split('T')[0]}`
 
     const response = await fetch(url)
@@ -19,17 +27,29 @@ export async function fetchActivities(
     $('.tlactivity').each((_, element) => {
       const $el = $(element)
 
+      // Skip comment-only activities (those without actual workout data)
+      const hasWorkoutData = $el.find('p').length > 0
+      if (!hasWorkoutData) {
+        return
+      }
+
       // Get activity date from parent .tlday h3
-      const dateText = $el.closest('.tlday').find('h3 a').text()
+      const $tlday = $el.closest('.tlday')
+      // Try to get date from h3 a first, then fall back to h3 text directly
+      let dateText = $tlday.find('h3 a').first().text().trim()
+      if (!dateText) {
+        dateText = $tlday.find('h3').first().text().trim()
+      }
+      
       const date = parseDate(dateText)
 
-      if (date >= startDate && date <= endDate) {
+      if (date >= normalizedStartDate && date <= normalizedEndDate) {
         // Extract activity details
         const title = $el.find('b').first().text()
-        const description = $el.find('.descrowtype0').html() ?? undefined
+        const description = $el.find('.descrow.descrowtype0').first().text().trim() || undefined
 
-        // Get duration and distance
-        const durationText = $el.find('[xclass="i0"]').text()
+        // Get duration and distance - look for span with xclass attribute
+        const durationText = $el.find('span[xclass="i0"]').text()
         const distanceMatch = $el
           .find('p')
           .text()
@@ -141,6 +161,7 @@ export async function fetchActivities(
     const isValidIntensity = typeof activity.intensity === 'object' && activity.intensity !== null
     const isValidTitle = activity.title !== '' && activity.title !== null
     const isValidCalculatedIntensity = typeof activity.calculatedIntensity === 'number' && !isNaN(activity.calculatedIntensity)
+    
     return isValidIntensity && isValidTitle && isValidCalculatedIntensity
   })
 
@@ -169,20 +190,42 @@ function parseDuration(durationText: string): number {
 }
 
 function parseDate(dateText: string): Date {
-  // Example input: "Sunday Dec 8"
-  const [_, month, day] = dateText.match(/(\w+)\s+(\d+)/) || []
-  if (!month || !day) {
-    return new Date()
+  // Example input: "Wednesday Nov 19 #" or "Sunday Dec 8"
+  // Extract month and day, skipping day of week
+  const match = dateText.match(/(\w+)\s+(\w+)\s+(\d+)/)
+  
+  if (match) {
+    // Format: "DayOfWeek Month Day"
+    const [_, dayOfWeek, month, day] = match
+    const currentYear = new Date().getFullYear()
+    const date = new Date(`${month} ${day} ${currentYear}`)
+    
+    // Handle year boundary cases
+    if (date > new Date()) {
+      date.setFullYear(currentYear - 1)
+    }
+    
+    // Set to start of day to avoid time comparison issues
+    date.setHours(0, 0, 0, 0)
+    
+    return date
   }
-
-  const currentYear = new Date().getFullYear()
-  const date = new Date(`${month} ${day} ${currentYear}`)
-
-  // Handle year boundary cases
-  if (date > new Date()) {
-    date.setFullYear(currentYear - 1)
+  
+  // Fallback to old format: "Month Day"
+  const fallbackMatch = dateText.match(/(\w+)\s+(\d+)/)
+  if (fallbackMatch) {
+    const [_, month, day] = fallbackMatch
+    const currentYear = new Date().getFullYear()
+    const date = new Date(`${month} ${day} ${currentYear}`)
+    
+    if (date > new Date()) {
+      date.setFullYear(currentYear - 1)
+    }
+    
+    date.setHours(0, 0, 0, 0)
+    return date
   }
-
-  return date
+  
+  return new Date()
 }
 
