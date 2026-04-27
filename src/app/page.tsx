@@ -1,7 +1,6 @@
 import Image from 'next/image'
 import { PopIn } from '@/components/animations/pop-in'
 import { WordsPullUp } from '@/components/animations/text/words-pull-up'
-import { Blockquote, BlockquoteAuthor } from '@/components/ui/blockquote'
 import { Wiggle } from '@/components/animations/wiggle'
 import { LinkImage } from '@/components/ui/images/link-image'
 import { TiltHover } from '@/components/animations/tilt-hover'
@@ -11,11 +10,56 @@ import { WaveEffect } from '@/components/animations/wave-effect'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip'
 import { allPosts } from 'content-collections'
 import { FeaturedPost } from '@/components/ui/posts/featured-post'
+import { ProjectCard } from '@/components/ui/projects/project-card'
 import { truncate } from '@/lib/utils/strings'
 import { ContactFormServer } from '@/components/ui/contact/form-server'
 import { Suspense } from 'react'
-import { getTimeBasedQuote } from '@/lib/quotes'
-import { RiExternalLinkLine, RiLoaderLine, RiRunLine } from '@remixicon/react'
+import { Github, Instagram, Linkedin } from '@geist-ui/icons'
+
+const projects = [
+  {
+    href: 'https://oguessr.com',
+    image: '/images/projects/oguessr.png',
+    title: 'OGuessr',
+    description: 'A geo-guessr style game for guessing the location of random orienteering maps!',
+    external: true,
+  },
+  {
+    href: 'https://ofantasy.org',
+    image: '/images/projects/ofantasy.png',
+    title: 'OFantasy',
+    description: 'A fantasy orienteering league manager to build and manage teams and compete against your friends!',
+    external: true,
+  },
+  {
+    href: 'https://money.anthonyriley.org',
+    image: '/images/projects/money.png',
+    title: 'Money',
+    description: 'A better expenses tracking app with a super simple interface and no accounts required!',
+    external: true,
+  },
+  {
+    href: 'https://www.stanfordrunningclub.com/',
+    image: '/images/projects/src.webp',
+    title: 'Stanford Running Club',
+    description: 'The club website for the Stanford Running Club, a club for runners at Stanford University.',
+    external: true,
+  },
+  {
+    href: '/training',
+    image: '/images/projects/training.png',
+    title: 'Training',
+    description: 'A tool to track and analyze my running training!',
+    external: false,
+  },
+  {
+    href: '/links',
+    image: '/images/projects/links.png',
+    title: 'Links',
+    description: 'Short links and optional encryption to share URLs safely with your friends!',
+    external: false,
+  },
+] as const
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 3600
@@ -25,8 +69,6 @@ const posts = allPosts
   .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
 
 export default async function Home() {
-  const quote = getTimeBasedQuote()
-  
   return (
     <main className="py-20">
       <section
@@ -47,16 +89,52 @@ export default async function Home() {
             </PopIn>
           </Wiggle>
           <div className="flex flex-col text-center">
-            <WordsPullUp text="Anthony Riley" className="text-4xl font-black mb-1" />
+            <WordsPullUp text="Anthony Riley" className="text-4xl font-black mb-2" />
             <WordsPullUp
               text="Athlete • Developer • Entrepreneur"
               className="text-muted-foreground"
             />
             <PopIn>
-              <Blockquote className="max-w-xl mx-auto text-sm my-8">
-                {quote.content}
-                <BlockquoteAuthor>{quote.author}</BlockquoteAuthor>
-              </Blockquote>
+              <div className="flex flex-col items-center gap-2 mt-3 mb-1 w-full max-w-md mx-auto px-2 text-muted-foreground">
+                <div className="flex items-center justify-center gap-4 shrink-0">
+                  <Link
+                    href="https://www.linkedin.com/in/anthony-riley/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
+                    aria-label="LinkedIn"
+                  >
+                    <Linkedin size={22} aria-hidden />
+                  </Link>
+                  <Link
+                    href="https://github.com/pythonicode"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
+                    aria-label="GitHub"
+                  >
+                    <Github size={22} aria-hidden />
+                  </Link>
+                  <Link
+                    href="https://www.instagram.com/aj.riley"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
+                    aria-label="Instagram"
+                  >
+                    <Instagram size={22} aria-hidden />
+                  </Link>
+                </div>
+                <Suspense
+                  fallback={
+                    <div className="h-7 w-full max-w-xs rounded-md border bg-muted/30 animate-pulse" />
+                  }
+                >
+                  <div className="w-full flex justify-center max-w-xs">
+                    <ContactFormServer compact />
+                  </div>
+                </Suspense>
+              </div>
             </PopIn>
             <div className="max-w-prose text-left mx-auto p-4">
               <p className="leading-relaxed">
@@ -258,50 +336,32 @@ export default async function Home() {
         />
       </section> */}
       <section
-        id="contact"
-        className="mx-auto max-w-screen-lg flex flex-col items-center justify-center"
+        id="projects"
+        className="mx-auto max-w-screen-lg flex flex-col items-center justify-center p-4 w-full"
       >
-        <h2 className="mb-8 mt-16 text-3xl text-center md:text-5xl font-black">✨ CONTACT ✨</h2>
-        <div className="flex flex-col items-center justify-center">
-          <Suspense fallback={<div>Loading...</div>}>
-            <ContactFormServer />
-          </Suspense>
+        <h2 className="mb-8 mt-16 text-3xl text-center md:text-5xl font-black">✨ PROJECTS ✨</h2>
+        <div className="grid w-full max-w-3xl grid-cols-1 gap-6 sm:grid-cols-2">
+          {projects.map((project) => (
+            <ProjectCard
+              key={project.href}
+              href={project.href}
+              title={project.title}
+              description={project.description}
+              image={project.image}
+              external={project.external}
+            />
+          ))}
         </div>
-      </section>
-      <section
-        id="tools"
-        className="mx-auto max-w-screen-lg flex flex-col items-center justify-center p-4"
-      >
-        <h2 className="mb-8 mt-16 text-3xl text-center md:text-5xl font-black">🛠️ TOOLS 🛠️</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
+        <WaveEffect className="mt-4">
           <Link
-            href="/links"
-            className="group flex flex-col items-center justify-center p-6 border rounded-lg hover:bg-muted/50 transition-colors duration-200 text-center"
+            href="https://github.com/pythonicode"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-center border rounded py-2 px-4 text-muted-foreground hover:text-foreground transition-colors"
           >
-              <div className="text-4xl mb-2"><RiExternalLinkLine /></div>
-              <h3 className="text-xl font-bold mb-2">Links</h3>
-              <p className="text-muted-foreground text-sm">
-                Share and protect your links with encryption
-              </p>
+            View More
           </Link>
-          <Link
-            href="/training"
-            className="group flex flex-col items-center justify-center p-6 border rounded-lg hover:bg-muted/50 transition-colors duration-200 text-center"
-          >
-              <div className="text-4xl mb-2"><RiRunLine /></div>
-              <h3 className="text-xl font-bold mb-2">Training</h3>
-              <p className="text-muted-foreground text-sm">
-                Track and analyze your training activities
-              </p>
-          </Link>
-          <div className="group flex flex-col items-center justify-center p-6 border rounded-lg text-center opacity-50 cursor-not-allowed">
-              <div className="text-4xl mb-2 "><RiLoaderLine /></div>
-              <h3 className="text-xl font-bold mb-2">Coming Soon</h3>
-              <p className="text-muted-foreground text-sm">
-                More tools are in development
-              </p>
-            </div>
-        </div>
+        </WaveEffect>
       </section>
       <div className="h-16" />
     </main>

@@ -15,6 +15,7 @@
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start"
   },
   "dependencies": {
+    "@geist-ui/icons": "^1.0.2",
     "@payloadcms/db-vercel-postgres": "latest",
     "@payloadcms/email-resend": "^3.5.0",
     "@payloadcms/next": "latest",

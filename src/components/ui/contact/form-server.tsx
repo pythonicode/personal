@@ -4,7 +4,7 @@ import { generateCaptcha } from '@/lib/actions/captcha/generate-captcha'
 import { ContactForm } from './form'
 import { RenderCaptcha } from '@/components/captcha'
 
-export async function ContactFormServer() {
+export async function ContactFormServer({ compact }: { compact?: boolean } = {}) {
   const result = await generateCaptcha()
 
   if (!result?.data) {
@@ -15,6 +15,7 @@ export async function ContactFormServer() {
     <ContactForm
       signedAnswer={result.data.signedAnswer}
       captcha={<RenderCaptcha base64={result.data.base64} />}
+      compact={compact}
     />
   )
 }
