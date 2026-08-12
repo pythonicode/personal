@@ -32,6 +32,22 @@ const projects = [
     external: true,
   },
   {
+    href: 'https://oanalysis.com',
+    image: '/images/projects/oanalysis.png',
+    title: 'O-Analysis',
+    description:
+      'A fully local orienteering analysis tool for reviewing trainings and competitions on the map!',
+    external: true,
+  },
+  {
+    href: 'https://sprintgame.projectorienteering.com',
+    image: '/images/projects/sprintgame.png',
+    title: 'Sprint Game',
+    description:
+      'A game where you try to find the shortest route choice on real sprint maps as fast as you can!',
+    external: true,
+  },
+  {
     href: 'https://money.anthonyriley.org',
     image: '/images/projects/money.png',
     title: 'Money',
