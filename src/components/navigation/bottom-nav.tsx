@@ -5,6 +5,7 @@ const BottomNav = () => {
   return (
     <nav className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-background bg-opacity-50 border-border border rounded flex justify-center z-50">
       <NavLink href="/#home">Home</NavLink>
+      <NavLink href="/#resume">Resume</NavLink>
       <NavLink href="/#posts">Posts</NavLink>
       <NavLink href="/#projects">Projects</NavLink>
       <ThemeToggle />

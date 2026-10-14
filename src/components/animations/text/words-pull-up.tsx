@@ -7,9 +7,11 @@ import * as React from 'react';
 export function WordsPullUp({
   text,
   className = '',
+  align = 'center',
 }: {
   text: string;
   className?: string;
+  align?: 'center' | 'start';
 }) {
   const splittedText = text.split(' ');
  
@@ -26,7 +28,7 @@ export function WordsPullUp({
   const ref = React.useRef<HTMLDivElement>(null);
   const isInView = useInView(ref as React.RefObject<Element>, { once: true });
   return (
-    <div className="flex justify-center">
+    <div className={cn('flex', align === 'start' ? 'justify-start' : 'justify-center')}>
       {splittedText.map((current, i) => (
         <motion.div
           key={i}

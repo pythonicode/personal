@@ -15,7 +15,8 @@
     --muted: hsl(0, 0%, 0%, 0.1);
     --muted-background: hsl(0, 0%, 97%);
     --border: hsl(0, 0%, 80%);
-    --radius: 0.5rem;
+    --line: hsl(0, 0%, 0%, 0.12);
+    --radius: 0px;
     
     --chart-1: oklch(0.646 0.222 41.116);
     --chart-2: oklch(0.6 0.118 184.704);
@@ -32,7 +33,8 @@
     --muted: hsl(0, 0%, 10%);
     --muted-background: hsl(0, 0%, 4%);
     --border: hsl(0, 0%, 20%);
-    --radius: 0.5rem;
+    --line: hsl(0, 0%, 100%, 0.12);
+    --radius: 0px;
 
     --chart-1: oklch(0.488 0.243 264.376);
     --chart-2: oklch(0.696 0.17 162.48);
@@ -43,7 +45,10 @@
 }
 
 @layer base {
-  * {
+  *,
+  *::before,
+  *::after {
+    border-radius: 0 !important;
     @apply border-border;
   }
   body {

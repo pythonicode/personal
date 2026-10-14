@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { PopIn } from '@/components/animations/pop-in'
 import { WordsPullUp } from '@/components/animations/text/words-pull-up'
-import { Wiggle } from '@/components/animations/wiggle'
+import { Resume } from '@/components/ui/resume/resume'
 import { LinkImage } from '@/components/ui/images/link-image'
 import { TiltHover } from '@/components/animations/tilt-hover'
 import { TrainingCalendar } from '@/components/ui/custom/activity-calendar'
@@ -86,32 +86,36 @@ const posts = allPosts
 
 export default async function Home() {
   return (
-    <main className="py-20">
-      <section
-        id=""
-        className="mx-auto max-w-screen-lg flex flex-col items-center justify-center px-4"
-      >
-        <div className="flex flex-col items-center gap-4">
-          <Wiggle>
+    <main className="pb-28">
+      <section id="home">
+        <div className="relative h-24 w-full overflow-hidden border-b border-line bg-muted sm:h-32">
+          <Image
+            src="/images/cover.jpg"
+            alt="Anthony Riley with the Grove team by the bay"
+            fill
+            priority
+            className="object-cover object-center"
+            sizes="(min-width: 1024px) 1024px, 100vw"
+          />
+        </div>
+        <div className="flex flex-col items-center px-4 pb-12">
+          <PopIn>
+            <div className="relative -mt-10 size-32 border-4 border-background bg-background outline outline-1 outline-border">
+              <Image
+                src="/images/profile.jpg"
+                alt="Anthony Riley"
+                fill
+                priority
+                className="object-cover"
+                sizes="128px"
+              />
+            </div>
+          </PopIn>
+          <div className="mt-4 flex w-full max-w-prose flex-col items-center text-center">
+            <WordsPullUp text="Anthony Riley" className="text-4xl font-black" />
+            <p className="mt-1 text-muted-foreground">Athlete · Developer · Entrepreneur</p>
             <PopIn>
-              <div className="relative w-32 h-32">
-                <Image
-                  src="/images/hero.jpg"
-                  alt="Anthony Riley"
-                  fill
-                  className="rounded object-cover"
-                />
-              </div>
-            </PopIn>
-          </Wiggle>
-          <div className="flex flex-col text-center">
-            <WordsPullUp text="Anthony Riley" className="text-4xl font-black mb-2" />
-            <WordsPullUp
-              text="Athlete • Developer • Entrepreneur"
-              className="text-muted-foreground"
-            />
-            <PopIn>
-              <div className="flex flex-col items-center gap-2 mt-3 mb-1 w-full max-w-md mx-auto px-2 text-muted-foreground">
+              <div className="mt-3 flex w-full flex-col items-center gap-2 text-muted-foreground">
                 <div className="flex items-center justify-center gap-4 shrink-0">
                   <Link
                     href="https://www.linkedin.com/in/anthony-riley/"
@@ -142,19 +146,17 @@ export default async function Home() {
                   </Link>
                 </div>
                 <Suspense
-                  fallback={
-                    <div className="h-7 w-full max-w-xs rounded-md border bg-muted/30 animate-pulse" />
-                  }
+                  fallback={<div className="h-7 w-full max-w-xs border bg-muted/30 animate-pulse" />}
                 >
-                  <div className="w-full flex justify-center max-w-xs">
+                  <div className="flex w-full max-w-xs justify-center">
                     <ContactFormServer compact />
                   </div>
                 </Suspense>
               </div>
             </PopIn>
-            <div className="max-w-prose text-left mx-auto p-4">
+            <div className="mt-2 max-w-prose text-left">
               <p className="leading-relaxed">
-                &nbsp;&nbsp;&nbsp;&nbsp;Welcome to my website! I am a{' '}
+                Welcome to my website! I am a{' '}
                 <span className="z-10 cursor-pointer px-1 -mx-1 hover:bg-background rounded inline-block relative font-bold text-cyan-600 dark:text-cyan-400 hover:text-cyan-900 dark:hover:text-cyan-300 transition-all duration-100 ease-in-out hover:-rotate-2 hover:scale-110">
                   software engineer
                 </span>{' '}
@@ -199,12 +201,12 @@ export default async function Home() {
           </div>
         </div>
       </section>
-      <section className="mx-auto max-w-screen-md grid grid-cols-2 gap-4 md:grid-cols-4 items-center justify-center mt-8 p-4">
-        <div className="group flex flex-col p-4 col-span-2 h-full">
-          <div className="grow flex items-center justify-center">
+      <section className="grid grid-cols-2 border-t border-line md:grid-cols-4">
+        <div className="group col-span-2 flex h-full flex-col justify-center border-b border-line px-4 py-3 md:border-b-0 md:border-r">
+          <div className="flex items-center justify-center">
             <TrainingCalendar />
           </div>
-          <div className="relative mt-4">
+          <div className="relative mt-2">
             <h3 className="opacity-0 text-center uppercase font-bold text-xs">My Training</h3>
             <h3 className="absolute top-0 right-0 left-0 group-hover:opacity-0 opacity-100 transition-all duration-300 text-xs text-center uppercase font-bold text-muted-foreground">
               My Training
@@ -216,46 +218,47 @@ export default async function Home() {
                 </h3>
               </TooltipTrigger>
               <TooltipContent side="bottom">
-                Click on any of the squares above to see more details!
+                Click a day to see the sessions.
               </TooltipContent>
             </Tooltip>
           </div>
         </div>
-        <div className="group p-4 h-full">
+        <div className="group flex h-full flex-col items-center justify-center border-r border-line px-3 py-3">
           <TiltHover>
             <LinkImage
               src="/images/favorite-book.jpg"
               alt="My Favorite Book"
-              width={200}
-              height={200}
-              className="aspect-[9/13] object-cover"
+              width={112}
+              height={162}
+              className="aspect-[9/13] h-32 w-auto object-cover sm:h-36"
             />
           </TiltHover>
-          <h3 className="group-hover:text-foreground transition-colors text-xs mt-4 text-center uppercase font-bold text-muted-foreground">
+          <h3 className="mt-2 text-center text-xs font-bold uppercase text-muted-foreground transition-colors group-hover:text-foreground">
             Favorite Book
           </h3>
         </div>
-        <div className="p-4 h-full group">
+        <div className="group flex h-full flex-col items-center justify-center px-3 py-3">
           <TiltHover degrees={1}>
             <LinkImage
               src="/images/favorite-movie.jpg"
-              alt="My Favorite Book"
-              width={200}
-              height={200}
-              className="aspect-[9/13] object-cover"
+              alt="My Favorite Movie"
+              width={112}
+              height={162}
+              className="aspect-[9/13] h-32 w-auto object-cover sm:h-36"
             />
           </TiltHover>
-          <h3 className="group-hover:text-foreground transition-colors text-xs text-center mt-4 uppercase font-bold text-muted-foreground">
+          <h3 className="mt-2 text-center text-xs font-bold uppercase text-muted-foreground transition-colors group-hover:text-foreground">
             Favorite Movie
           </h3>
         </div>
       </section>
+      <Resume />
       <section
         id="posts"
-        className="mx-auto max-w-screen-lg flex flex-col items-center justify-center p-4"
+        className="flex w-full scroll-mt-8 flex-col items-center border-t border-line px-4 py-16"
       >
-        <h2 className="mb-8 mt-16 text-3xl text-center md:text-5xl font-black">✨ POSTS ✨</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
+        <h2 className="mb-8 text-center text-3xl font-black md:text-5xl">POSTS</h2>
+        <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {posts.slice(0, 3).map((post) => (
             <FeaturedPost
               key={post._meta.path}
@@ -269,12 +272,12 @@ export default async function Home() {
             />
           ))}
         </div>
-        <WaveEffect className="mt-4">
+        <WaveEffect className="mt-6">
           <Link
             href="/posts"
-            className="text-sm text-center border rounded py-2 px-4 text-muted-foreground hover:text-foreground transition-colors"
+            className="border border-border px-4 py-2 text-center text-xs font-bold uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:bg-foreground hover:text-background"
           >
-            View More
+            View more
           </Link>
         </WaveEffect>
       </section>
@@ -353,10 +356,10 @@ export default async function Home() {
       </section> */}
       <section
         id="projects"
-        className="mx-auto max-w-screen-lg flex flex-col items-center justify-center p-4 w-full"
+        className="flex w-full scroll-mt-8 flex-col items-center border-t border-line px-4 py-16"
       >
-        <h2 className="mb-8 mt-16 text-3xl text-center md:text-5xl font-black">✨ PROJECTS ✨</h2>
-        <div className="grid w-full max-w-3xl grid-cols-1 gap-6 sm:grid-cols-2">
+        <h2 className="mb-8 text-center text-3xl font-black md:text-5xl">PROJECTS</h2>
+        <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {projects.map((project) => (
             <ProjectCard
               key={project.href}
@@ -368,18 +371,17 @@ export default async function Home() {
             />
           ))}
         </div>
-        <WaveEffect className="mt-4">
+        <WaveEffect className="mt-6">
           <Link
             href="https://github.com/pythonicode"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm text-center border rounded py-2 px-4 text-muted-foreground hover:text-foreground transition-colors"
+            className="border border-border px-4 py-2 text-center text-xs font-bold uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:bg-foreground hover:text-background"
           >
-            View More
+            View more
           </Link>
         </WaveEffect>
       </section>
-      <div className="h-16" />
     </main>
   )
 }

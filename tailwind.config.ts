@@ -20,6 +20,7 @@ export default {
           foreground: 'var(--muted-foreground)',
         },
         border: 'var(--border)',
+        line: 'var(--line)',
       },
     },
   },

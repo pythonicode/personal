@@ -8,7 +8,7 @@ export type Author = {
 export const authors: Record<string, Author> = {
   'Anthony Riley': {
     name: 'Anthony Riley',
-    avatar: '/images/hero.jpg',
+    avatar: '/images/profile.jpg',
   },
 }
 

@@ -3,6 +3,7 @@ import './globals.css'
 
 import importFont from 'next/font/local'
 import BottomNav from '@/components/navigation/bottom-nav'
+import { SiteFrame } from '@/components/navigation/site-frame'
 import Providers from '@/providers'
 import { cn } from '@/lib/utils/css'
 
@@ -25,7 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning>
       <body className={cn(font.variable, 'font-sans')}>
         <Providers>
-          {children}
+          <SiteFrame>{children}</SiteFrame>
           <BottomNav />
           <Toaster />
         </Providers>

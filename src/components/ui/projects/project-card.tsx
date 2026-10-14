@@ -22,11 +22,11 @@ export function ProjectCard({ href, title, description, image, external }: Proje
   return (
     <Link
       href={href}
-      className='w-full h-full'
+      className="flex h-full w-full"
       {...(external ? { target: '_blank' as const, rel: 'noopener noreferrer' as const } : {})}
     >
       <WaveEffect className='w-full h-full'>
-        <article className="group relative flex h-full w-full flex-col overflow-hidden rounded border border-border bg-background transition-colors hover:border-muted-foreground/25">
+        <article className="group relative flex h-full w-full flex-col overflow-hidden border border-border bg-background transition-colors duration-200 hover:border-foreground">
           <div className="relative h-48 w-full overflow-hidden">
             <Image
               src={image}
@@ -46,7 +46,7 @@ export function ProjectCard({ href, title, description, image, external }: Proje
                   <RiExternalLinkLine className="size-3.5" aria-hidden />
                 </span>
               ) : (
-                <span className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-xs">Here</span>
+                <span className="shrink-0 bg-muted px-2 py-0.5 text-xs">Here</span>
               )}
             </div>
 
@@ -56,6 +56,10 @@ export function ProjectCard({ href, title, description, image, external }: Proje
 
             <p className="line-clamp-3 text-sm text-muted-foreground">{description}</p>
           </div>
+          <span
+            className="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-foreground transition-transform duration-300 group-hover:scale-x-100"
+            aria-hidden
+          />
         </article>
       </WaveEffect>
     </Link>

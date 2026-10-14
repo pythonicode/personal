@@ -22,9 +22,9 @@ export function FeaturedPost({
   slug,
 }: FeaturedPostProps) {
   return (
-    <Link href={`/posts/${slug}`}>
-      <WaveEffect>
-        <article className="group relative flex flex-col overflow-hidden rounded border border-border bg-background transition-colors">
+    <Link href={`/posts/${slug}`} className="flex h-full w-full">
+      <WaveEffect className="h-full w-full">
+        <article className="group relative flex h-full w-full flex-col overflow-hidden border border-border bg-background transition-colors duration-200 hover:border-foreground">
           <div className="relative h-48 w-full overflow-hidden">
             <Image
               src={image}
@@ -45,7 +45,9 @@ export function FeaturedPost({
               <span>{readingTime} min read</span>
             </div>
 
-            <h2 className="text-xl font-semibold text-foreground">{title}</h2>
+            <h2 className="text-xl font-semibold text-foreground transition-colors group-hover:text-cyan-600 dark:group-hover:text-cyan-400">
+              {title}
+            </h2>
 
             <p className="line-clamp-3 text-sm text-muted-foreground">{description}</p>
 
@@ -53,13 +55,17 @@ export function FeaturedPost({
               {tags.map((tag) => (
                 <span
                   key={tag}
-                  className="rounded-full bg-muted px-2.5 py-0.5 text-xs text-muted-foreground"
+                  className="bg-muted px-2.5 py-0.5 text-xs text-muted-foreground"
                 >
                   {tag}
                 </span>
               ))}
             </div>
           </div>
+          <span
+            className="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-foreground transition-transform duration-300 group-hover:scale-x-100"
+            aria-hidden
+          />
         </article>
       </WaveEffect>
     </Link>
