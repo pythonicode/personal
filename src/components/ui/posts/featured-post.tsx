@@ -24,13 +24,13 @@ export function FeaturedPost({
   return (
     <Link href={`/posts/${slug}`} className="flex h-full w-full">
       <WaveEffect className="h-full w-full">
-        <article className="group relative flex h-full w-full flex-col overflow-hidden border border-border bg-background transition-colors duration-200 hover:border-foreground">
+        <article className="group relative flex h-full w-full flex-col overflow-hidden border border-border bg-background transition-colors duration-500 hover:border-foreground">
           <div className="relative h-48 w-full overflow-hidden">
             <Image
               src={image}
               alt={title}
               fill
-              className="object-cover transition-transform duration-300 group-hover:scale-105"
+              className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
             />
           </div>
           <div className="flex flex-1 flex-col gap-2 p-4">
@@ -63,9 +63,10 @@ export function FeaturedPost({
             </div>
           </div>
           <span
-            className="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-foreground transition-transform duration-300 group-hover:scale-x-100"
+            className="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-foreground transition-transform duration-500 ease-out group-hover:scale-x-100"
             aria-hidden
           />
+          <span aria-hidden className="card-edge-shine" />
         </article>
       </WaveEffect>
     </Link>

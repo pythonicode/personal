@@ -1,4 +1,6 @@
 import Image from 'next/image'
+import { LineSection } from '@/components/animations/line-section'
+import { DrawY, Reveal } from '@/components/animations/reveal'
 
 const experience = [
   {
@@ -53,36 +55,41 @@ const education = [
 
 export function Resume() {
   return (
-    <section
+    <LineSection
       id="resume"
-      className="flex w-full scroll-mt-8 flex-col items-center border-t border-line px-4 py-16"
+      fade={false}
+      shineDelay="2.4s"
+      className="flex w-full scroll-mt-8 flex-col items-center px-4 py-16"
     >
       <h2 className="text-center text-3xl font-black md:text-5xl">RESUME</h2>
       <a
         href="https://www.linkedin.com/in/anthony-riley/"
         target="_blank"
         rel="noopener noreferrer"
-        className="mt-3 text-xs font-bold uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:text-foreground"
+        className="mt-3 text-xs font-bold uppercase tracking-[0.18em] text-muted-foreground transition-colors duration-300 hover:text-foreground"
       >
         LinkedIn
       </a>
 
       <ol className="relative mt-10 w-full max-w-2xl">
-        <span className="absolute bottom-3 left-[7px] top-2 w-px bg-border" aria-hidden />
-        {experience.map((role) => (
-          <li key={`${role.org}-${role.years}`} className="group relative pb-4 pl-8 last:pb-0">
-            <span
-              className="absolute left-0 top-4 size-4 border border-foreground bg-background transition-colors group-hover:bg-foreground"
-              aria-hidden
-            />
-            <div className="border border-border p-4 transition-colors hover:bg-muted-background">
+        <DrawY className="bottom-3 left-[7px] top-2" />
+        {experience.map((role, index) => (
+          <li key={`${role.org}-${role.years}`}>
+            <Reveal
+              delay={index * 0.08}
+              className={`group relative pl-8 ${index === experience.length - 1 ? '' : 'pb-8'}`}
+            >
+              <span
+                className="absolute left-1 top-[9px] size-1.5 bg-line transition-colors duration-300 group-hover:bg-foreground"
+                aria-hidden
+              />
               <div className="flex items-start gap-3">
                 <Image
                   src={role.logo}
                   alt=""
                   width={36}
                   height={36}
-                  className="size-9 shrink-0 bg-white object-contain"
+                  className="size-9 shrink-0 bg-white object-contain transition-transform duration-500 ease-out group-hover:scale-105"
                 />
                 <div className="min-w-0">
                   <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
@@ -97,27 +104,24 @@ export function Resume() {
                 </div>
               </div>
               <p className="mt-3 text-sm leading-relaxed">{role.summary}</p>
-            </div>
+            </Reveal>
           </li>
         ))}
       </ol>
 
-      <p className="mb-3 mt-10 text-center text-[11px] font-bold uppercase tracking-[0.22em] text-muted-foreground">
+      <p className="mb-4 mt-4 text-center text-[11px] font-bold uppercase tracking-[0.22em] text-muted-foreground">
         Education
       </p>
-      <div className="grid w-full max-w-2xl grid-cols-1 border border-border sm:grid-cols-2">
-        {education.map((item) => (
-          <div
-            key={item.school}
-            className="border-b border-border p-5 transition-colors last:border-b-0 hover:bg-muted-background sm:border-b-0 sm:odd:border-r"
-          >
+      <div className="grid w-full max-w-2xl grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-10">
+        {education.map((item, index) => (
+          <Reveal key={item.school} delay={0.12 + index * 0.08} className="group">
             <div className="flex items-start gap-3">
               <Image
                 src={item.logo}
                 alt=""
                 width={36}
                 height={36}
-                className="size-9 shrink-0 bg-white object-contain"
+                className="size-9 shrink-0 bg-white object-contain transition-transform duration-500 ease-out group-hover:scale-105"
               />
               <div className="min-w-0">
                 <h3 className="font-semibold">{item.school}</h3>
@@ -125,9 +129,9 @@ export function Resume() {
                 <p className="mt-2 text-sm text-muted-foreground">{item.note}</p>
               </div>
             </div>
-          </div>
+          </Reveal>
         ))}
       </div>
-    </section>
+    </LineSection>
   )
 }

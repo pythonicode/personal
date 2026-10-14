@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { EdgeGleam, LineSection } from '@/components/animations/line-section'
 import { PopIn } from '@/components/animations/pop-in'
 import { WordsPullUp } from '@/components/animations/text/words-pull-up'
 import { Resume } from '@/components/ui/resume/resume'
@@ -88,15 +89,16 @@ export default async function Home() {
   return (
     <main className="pb-28">
       <section id="home">
-        <div className="relative h-24 w-full overflow-hidden border-b border-line bg-muted sm:h-32">
+        <div className="relative h-24 w-full overflow-hidden bg-muted sm:h-32">
           <Image
             src="/images/cover.jpg"
             alt="Anthony Riley with the Grove team by the bay"
             fill
             priority
-            className="object-cover object-center"
+            className="cover-settle object-cover object-center"
             sizes="(min-width: 1024px) 1024px, 100vw"
           />
+          <span aria-hidden className="cover-rule pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left bg-line" />
         </div>
         <div className="flex flex-col items-center px-4 pb-12">
           <PopIn>
@@ -109,6 +111,7 @@ export default async function Home() {
                 className="object-cover"
                 sizes="128px"
               />
+              <span aria-hidden className="card-edge-shine" style={{ animationDuration: '16s' }} />
             </div>
           </PopIn>
           <div className="mt-4 flex w-full max-w-prose flex-col items-center text-center">
@@ -121,7 +124,7 @@ export default async function Home() {
                     href="https://www.linkedin.com/in/anthony-riley/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
+                    className="transition-all duration-300 hover:-translate-y-0.5 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
                     aria-label="LinkedIn"
                   >
                     <Linkedin size={22} aria-hidden />
@@ -130,7 +133,7 @@ export default async function Home() {
                     href="https://github.com/pythonicode"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
+                    className="transition-all duration-300 hover:-translate-y-0.5 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
                     aria-label="GitHub"
                   >
                     <Github size={22} aria-hidden />
@@ -139,7 +142,7 @@ export default async function Home() {
                     href="https://www.instagram.com/aj.riley"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
+                    className="transition-all duration-300 hover:-translate-y-0.5 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
                     aria-label="Instagram"
                   >
                     <Instagram size={22} aria-hidden />
@@ -201,8 +204,10 @@ export default async function Home() {
           </div>
         </div>
       </section>
-      <section className="grid grid-cols-2 border-t border-line md:grid-cols-4">
-        <div className="group col-span-2 flex h-full flex-col justify-center border-b border-line px-4 py-3 md:border-b-0 md:border-r">
+      <LineSection className="grid grid-cols-2 md:grid-cols-4" shineDelay="0.4s">
+        <div className="group relative col-span-2 flex h-full flex-col justify-center px-4 py-3">
+          <EdgeGleam axis="x" className="bottom-0 md:hidden" delay="1.5s" />
+          <EdgeGleam axis="y" className="right-0 hidden md:block" delay="2s" />
           <div className="flex items-center justify-center">
             <TrainingCalendar />
           </div>
@@ -223,7 +228,8 @@ export default async function Home() {
             </Tooltip>
           </div>
         </div>
-        <div className="group flex h-full flex-col items-center justify-center border-r border-line px-3 py-3">
+        <div className="group relative flex h-full flex-col items-center justify-center px-3 py-3">
+          <EdgeGleam axis="y" className="right-0" delay="6s" />
           <TiltHover>
             <LinkImage
               src="/images/favorite-book.jpg"
@@ -251,11 +257,12 @@ export default async function Home() {
             Favorite Movie
           </h3>
         </div>
-      </section>
+      </LineSection>
       <Resume />
-      <section
+      <LineSection
         id="posts"
-        className="flex w-full scroll-mt-8 flex-col items-center border-t border-line px-4 py-16"
+        shineDelay="4s"
+        className="flex w-full scroll-mt-8 flex-col items-center px-4 py-16"
       >
         <h2 className="mb-8 text-center text-3xl font-black md:text-5xl">POSTS</h2>
         <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -280,7 +287,7 @@ export default async function Home() {
             View more
           </Link>
         </WaveEffect>
-      </section>
+      </LineSection>
       {/* <section className="mx-auto max-w-screen-lg flex flex-col items-center justify-center">
         <h2 className="mb-8 mt-16 text-3xl text-center md:text-5xl font-black">✨ TIMELINE ✨</h2>
         <Timeline
@@ -354,9 +361,10 @@ export default async function Home() {
           ]}
         />
       </section> */}
-      <section
+      <LineSection
         id="projects"
-        className="flex w-full scroll-mt-8 flex-col items-center border-t border-line px-4 py-16"
+        shineDelay="8s"
+        className="flex w-full scroll-mt-8 flex-col items-center px-4 py-16"
       >
         <h2 className="mb-8 text-center text-3xl font-black md:text-5xl">PROJECTS</h2>
         <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -381,7 +389,7 @@ export default async function Home() {
             View more
           </Link>
         </WaveEffect>
-      </section>
+      </LineSection>
     </main>
   )
 }

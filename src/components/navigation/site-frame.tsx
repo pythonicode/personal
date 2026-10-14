@@ -11,6 +11,6 @@ export function SiteFrame({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="mx-auto min-h-dvh max-w-screen-lg border-x border-line">{children}</div>
+    <div className="site-frame mx-auto min-h-dvh max-w-screen-lg">{children}</div>
   )
 }
