@@ -78,8 +78,47 @@
   }
 }
 
+html {
+  overflow-x: clip;
+}
+
 .site-frame {
   position: relative;
+  isolation: isolate;
+}
+
+/* Spans the full viewport and scrolls with the page. Oversized so the slow drift
+   never reveals an edge. The radial mask keeps the centre clear behind the text and
+   fades the contours out toward the screen edges. */
+.site-backdrop {
+  position: absolute;
+  top: -40px;
+  bottom: -40px;
+  left: 50%;
+  width: 100vw;
+  margin-left: -50vw;
+  z-index: -1;
+  pointer-events: none;
+  background-color: var(--line);
+  -webkit-mask:
+    radial-gradient(ellipse 50% 70% at 50% 50%, transparent 20%, #000 50%, #000 62%, transparent 100%),
+    url('/images/backdrop/contours.svg') 0 0 / 800px 800px repeat;
+  -webkit-mask-composite: source-in;
+  mask:
+    radial-gradient(ellipse 50% 70% at 50% 50%, transparent 20%, #000 50%, #000 62%, transparent 100%),
+    url('/images/backdrop/contours.svg') 0 0 / 800px 800px repeat;
+  mask-composite: intersect;
+  opacity: 0.4;
+  animation: contour-drift 60s ease-in-out infinite alternate;
+}
+
+@keyframes contour-drift {
+  from {
+    transform: translate3d(-14px, -8px, 0);
+  }
+  to {
+    transform: translate3d(14px, 8px, 0);
+  }
 }
 
 .site-frame::before,
@@ -205,7 +244,8 @@
   .cover-rule,
   .gleam-x,
   .gleam-y,
-  .card-edge-shine {
+  .card-edge-shine,
+  .site-backdrop {
     animation: none;
     background-image: none;
   }
