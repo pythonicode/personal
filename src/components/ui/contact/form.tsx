@@ -90,20 +90,34 @@ const ContactForm = ({
                 : 'Click to Reveal'}
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="p-4">
+        <DropdownMenuContent className="w-80 p-4">
+          <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+            Solve to reveal
+          </p>
           {captcha}
-          <div className="flex items-center gap-2 mt-2">
+          <form onSubmit={handleSubmit} className="mt-2 flex items-center gap-2">
+            <label htmlFor="captcha" className="sr-only">
+              Answer to 2 decimal places
+            </label>
             <Input
               id="captcha"
-              placeholder="Answer (to 2 decimal places)"
+              inputMode="decimal"
+              autoComplete="off"
+              placeholder="Answer, to 2 decimal places"
               required
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
             />
-            <Button size="icon" onClick={handleSubmit} className="w-8 h-8">
-              <RiSendPlane2Fill className="w-4 h-4" />
+            <Button
+              type="submit"
+              size="icon"
+              aria-label="Submit answer"
+              disabled={status === 'executing' || answer.trim() === ''}
+              className="h-9 w-9 shrink-0"
+            >
+              <RiSendPlane2Fill className="h-4 w-4" />
             </Button>
-          </div>
+          </form>
           {status === 'hasErrored' && (
             <p className="text-xs text-red-500 mt-1">
               {result.serverError ??
