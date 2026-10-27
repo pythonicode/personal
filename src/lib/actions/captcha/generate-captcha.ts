@@ -10,21 +10,15 @@ export const generateCaptcha = client.action(async () => {
     Math.floor(Math.random() * 9)
   ]
 
-  // Create an SVG with the expression
+  // Create an SVG with the expression. Each piece is placed explicitly so the
+  // limits sit at the top and bottom of the integral sign, with the integrand after it.
   const svg = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="300" height="100">
-      <text x="50%" y="50%" 
-            dominant-baseline="middle" 
-            text-anchor="middle" 
-            font-family="math, serif" 
-            font-size="24">
-        <tspan x="45%">
-          <tspan dx="20" dy="-20" font-size="12">${upper.toFixed(1)}</tspan>
-          <tspan dx="-25" dy="40" font-size="12">${lower.toFixed(1)}</tspan>
-          <tspan dy="-20" font-size="32">∫</tspan>
-        </tspan>
-        <tspan dx="5">${expression} dx</tspan>
-      </text>
+    <svg xmlns="http://www.w3.org/2000/svg" width="300" height="120" viewBox="0 0 300 120"
+         font-family="'STIX Two Math', 'Cambria Math', 'Times New Roman', serif" fill="#000">
+      <text x="131" y="36" font-size="16" text-anchor="middle">${upper.toFixed(1)}</text>
+      <text x="131" y="114" font-size="16" text-anchor="middle">${lower.toFixed(1)}</text>
+      <text x="108" y="90" font-size="58" text-anchor="middle">∫</text>
+      <text x="146" y="80" font-size="26">${expression} <tspan font-style="italic" dx="2">dx</tspan></text>
     </svg>
   `.trim()
 
