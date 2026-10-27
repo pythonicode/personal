@@ -29,6 +29,14 @@ const experience = [
     logo: '/images/logos/stanford-medicine.png',
   },
   {
+    years: 'Jun — Sep 2022',
+    title: 'Engineering Intern',
+    org: 'Apple',
+    meta: 'Cupertino, California · Sensing & Connectivity',
+    summary: 'Worked on the prototype app and algorithms for the Find My app on Apple Watch.',
+    logo: '/images/logos/apple.png',
+  },
+  {
     years: '2022',
     title: 'Software Engineer',
     org: 'Perform',
