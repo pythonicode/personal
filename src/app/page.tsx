@@ -56,6 +56,14 @@ const projects = [
     external: true,
   },
   {
+    href: 'https://omatcher.com',
+    image: '/images/projects/omatcher.png',
+    title: 'OMatcher',
+    description:
+      'A private matchmaker for orienteers. Submit the people you are interested in, and get matched only when the interest is mutual!',
+    external: true,
+  },
+  {
     href: 'https://www.stanfordrunningclub.com/',
     image: '/images/projects/src.webp',
     title: 'Stanford Running Club',
