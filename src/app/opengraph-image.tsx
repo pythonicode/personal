@@ -7,7 +7,7 @@ export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
 // Matches the site: hairline grid rules, square corners, General Sans
-const INK = '#000000'
+const MUTED = 'rgba(0, 0, 0, 0.6)' // the site's muted-foreground
 const LINE = '#cccccc'
 
 const OUTER = 56
@@ -70,12 +70,13 @@ export default async function OpengraphImage() {
                 display: 'flex',
                 flex: 1,
                 alignItems: 'center',
-                paddingLeft: 56,
+                justifyContent: 'center',
+                paddingLeft: 6, // offsets the trailing letter-spacing so the text is optically centred
                 fontSize: 40,
                 fontWeight: 500,
                 letterSpacing: 6,
                 textTransform: 'uppercase',
-                color: INK,
+                color: MUTED,
               }}
             >
               anthonyriley.org
