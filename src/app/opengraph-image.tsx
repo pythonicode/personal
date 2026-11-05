@@ -6,48 +6,43 @@ export const alt = 'Anthony Riley'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
-const dataUri = async (file: string, mime: string) => {
-  const buffer = await readFile(path.join(process.cwd(), 'public/images', file))
-  return `data:${mime};base64,${buffer.toString('base64')}`
-}
+const BAND_HEIGHT = 120
 
 export default async function OpengraphImage() {
-  const [cover, profile] = await Promise.all([
-    dataUri('cover.jpg', 'image/jpeg'),
-    dataUri('profile.jpg', 'image/jpeg'),
-  ])
+  const cover = await readFile(path.join(process.cwd(), 'public/images/cover.jpg'))
+  const coverSrc = `data:image/jpeg;base64,${cover.toString('base64')}`
 
   return new ImageResponse(
     (
       <div
         style={{
           display: 'flex',
-          position: 'relative',
+          flexDirection: 'column',
           width: '100%',
           height: '100%',
           background: '#ffffff',
         }}
       >
         <img
-          src={cover}
+          src={coverSrc}
           width={1200}
-          height={630}
-          style={{ position: 'absolute', top: 0, left: 0, width: 1200, height: 630, objectFit: 'cover' }}
+          height={630 - BAND_HEIGHT}
+          style={{ width: 1200, height: 630 - BAND_HEIGHT, objectFit: 'cover' }}
         />
-        <img
-          src={profile}
-          width={280}
-          height={280}
+        <div
           style={{
-            position: 'absolute',
-            top: 175,
-            left: 460,
-            width: 280,
-            height: 280,
-            objectFit: 'cover',
-            border: '8px solid #ffffff',
+            display: 'flex',
+            alignItems: 'center',
+            paddingLeft: 72,
+            width: '100%',
+            height: BAND_HEIGHT,
+            fontSize: 40,
+            letterSpacing: 3,
+            color: '#000000',
           }}
-        />
+        >
+          anthonyriley.org
+        </div>
       </div>
     ),
     { ...size },
