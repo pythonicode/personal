@@ -25,8 +25,7 @@ export default async function OpengraphImage() {
           position: 'relative',
           width: '100%',
           height: '100%',
-          background: '#050505',
-          color: '#ffffff',
+          background: '#ffffff',
         }}
       >
         <img
@@ -35,46 +34,20 @@ export default async function OpengraphImage() {
           height={630}
           style={{ position: 'absolute', top: 0, left: 0, width: 1200, height: 630, objectFit: 'cover' }}
         />
-        <div
+        <img
+          src={profile}
+          width={280}
+          height={280}
           style={{
             position: 'absolute',
-            top: 0,
-            left: 0,
-            width: 1200,
-            height: 630,
-            background:
-              'linear-gradient(to top, rgba(5,5,5,0.96) 0%, rgba(5,5,5,0.7) 40%, rgba(5,5,5,0.35) 100%)',
+            top: 175,
+            left: 460,
+            width: 280,
+            height: 280,
+            objectFit: 'cover',
+            border: '8px solid #ffffff',
           }}
         />
-        <div
-          style={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            bottom: 0,
-            height: 6,
-            background: '#ffffff',
-          }}
-        />
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'flex-end',
-            position: 'absolute',
-            left: 96,
-            bottom: 96,
-          }}
-        >
-          <img
-            src={profile}
-            width={220}
-            height={220}
-            style={{ objectFit: 'cover', border: '4px solid #ffffff' }}
-          />
-          <div style={{ display: 'flex', marginLeft: 40, marginBottom: 6, fontSize: 96, fontWeight: 800, lineHeight: 1 }}>
-            Anthony Riley
-          </div>
-        </div>
       </div>
     ),
     { ...size },
