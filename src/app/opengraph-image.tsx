@@ -6,9 +6,24 @@ export const alt = 'Anthony Riley'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
+// Matches the site: hairline grid rules, square corners, General Sans
+const MUTED = 'rgba(0, 0, 0, 0.6)' // the site's muted-foreground
+const LINE = '#cccccc'
+
+const OUTER = 56
+const FRAME_WIDTH = size.width - OUTER * 2
+const FRAME_HEIGHT = size.height - OUTER * 2
+const COVER_HEIGHT = Math.round((FRAME_WIDTH - 2) / 4) // cover is 4:1 and shown uncropped
+const FOOTER_HEIGHT = FRAME_HEIGHT - 2 - COVER_HEIGHT - 1 // inside the frame border and cover rule
+
+const dataUri = (file: Buffer) => `data:image/jpeg;base64,${file.toString('base64')}`
+
 export default async function OpengraphImage() {
-  const photo = await readFile(path.join(process.cwd(), 'public/images/profile.jpg'))
-  const photoSrc = `data:image/jpeg;base64,${photo.toString('base64')}`
+  const [cover, profile, medium] = await Promise.all([
+    readFile(path.join(process.cwd(), 'public/images/cover.jpg')),
+    readFile(path.join(process.cwd(), 'public/images/profile.jpg')),
+    readFile(path.join(process.cwd(), 'src/app/GeneralSans-Medium.ttf')),
+  ])
 
   return new ImageResponse(
     (
@@ -17,36 +32,62 @@ export default async function OpengraphImage() {
           display: 'flex',
           width: '100%',
           height: '100%',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: '96px 110px',
+          padding: OUTER,
           background: '#ffffff',
-          color: '#000000',
+          fontFamily: 'General Sans',
         }}
       >
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <div style={{ display: 'flex', fontSize: 92, fontWeight: 800, lineHeight: 1 }}>
-            Anthony Riley
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              marginTop: 28,
-              fontSize: 36,
-              color: '#666666',
-            }}
-          >
-            Athlete · Developer · Entrepreneur
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            position: 'relative',
+            width: FRAME_WIDTH,
+            height: FRAME_HEIGHT,
+            border: `1px solid ${LINE}`,
+          }}
+        >
+          <img
+            src={dataUri(cover)}
+            width={FRAME_WIDTH - 2}
+            height={COVER_HEIGHT}
+            style={{ width: FRAME_WIDTH - 2, height: COVER_HEIGHT, borderBottom: `1px solid ${LINE}` }}
+          />
+          <div style={{ display: 'flex', flex: 1, alignItems: 'stretch' }}>
+            <img
+              src={dataUri(profile)}
+              width={FOOTER_HEIGHT}
+              height={FOOTER_HEIGHT}
+              style={{
+                width: FOOTER_HEIGHT,
+                height: FOOTER_HEIGHT,
+                objectFit: 'cover',
+                borderRight: `1px solid ${LINE}`,
+              }}
+            />
+            <div
+              style={{
+                display: 'flex',
+                flex: 1,
+                alignItems: 'center',
+                justifyContent: 'center',
+                paddingLeft: 6, // offsets the trailing letter-spacing so the text is optically centred
+                fontSize: 40,
+                fontWeight: 500,
+                letterSpacing: 6,
+                textTransform: 'uppercase',
+                color: MUTED,
+              }}
+            >
+              anthonyriley.org
+            </div>
           </div>
         </div>
-        <img
-          src={photoSrc}
-          width={280}
-          height={280}
-          style={{ objectFit: 'cover', border: '1px solid #000000' }}
-        />
       </div>
     ),
-    { ...size },
+    {
+      ...size,
+      fonts: [{ name: 'General Sans', data: medium, weight: 500, style: 'normal' }],
+    },
   )
 }
